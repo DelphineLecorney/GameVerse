@@ -81,6 +81,7 @@ La chaîne de connexion est stockée dans les **User Secrets** :
     "DefaultConnection": "Server=tcp:<server>.database.windows.net,1433;Initial Catalog=GameVerse;User ID=<user>;Password=<password>;Encrypt=True;"
   }
 }
+```
 
 ## 📸 Migration appliquée sur Azure SQL
 
