@@ -5,7 +5,7 @@
   </Folder>
   <Folder Name="/Éléments de solution/docs/" />
   <Folder Name="/Éléments de solution/docs/images/">
-    <File Path="../../../../../../Documents/Documents administratifs/IMPORTANT/Forem/Migrations_azure.png" />
+    <File Path="migration-azure.png" />
   </Folder>
   <Project Path="GameVerse.API/GameVerse.API.csproj" />
 </Solution>

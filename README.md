@@ -86,4 +86,4 @@ La chaîne de connexion est stockée dans les **User Secrets** :
 
 Voici la migration EF Core appliquée avec succès sur Azure :
 
-![Migration Azure](./docs/images/Migrations-azure.png)
+![Migration Azure](./docs/images/migration-azure.png)
