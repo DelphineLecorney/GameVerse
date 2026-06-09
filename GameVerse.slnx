@@ -3,9 +3,9 @@
     <File Path=".gitignore" />
     <File Path="README.md" />
   </Folder>
-  <Folder Name="/Éléments de solution/docs/" />
-  <Folder Name="/Éléments de solution/docs/images/">
-    <File Path="migration-azure.png" />
+  <Folder Name="/Éléments de solution/docs/">
+    <File Path="docs/images/migration-azure.png" />
   </Folder>
+  <Folder Name="/Éléments de solution/docs/images/" />
   <Project Path="GameVerse.API/GameVerse.API.csproj" />
 </Solution>
