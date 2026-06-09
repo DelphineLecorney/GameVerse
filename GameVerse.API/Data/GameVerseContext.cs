@@ -20,7 +20,15 @@ namespace GameVerse.API.Data
             modelBuilder.Entity<UserGame>()
                 .HasKey(ug => new { ug.UserId, ug.GameId, ug.RelationType });
 
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UserGame>()
+                .HasOne(ug => ug.User)
+                .WithMany(u => u.UserGames)
+                .HasForeignKey(ug => ug.UserId);
+
+            modelBuilder.Entity<UserGame>()
+                .HasOne(ug => ug.Game)
+                .WithMany(g => g.UserGames)
+                .HasForeignKey(ug => ug.GameId);
         }
     }
 }
