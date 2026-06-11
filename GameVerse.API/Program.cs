@@ -1,28 +1,30 @@
 using GameVerse.API.Data;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddDbContext<GameVerseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.MapOpenApi();
+
+app.MapScalarApiReference(options =>
 {
-    app.MapOpenApi();
-}
+    options.Title = "GameVerse API";
+    options.Theme = ScalarTheme.Kepler;
+});
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+// Redirection de /openapi vers /scalar/v1 pour tests
+app.MapGet("/openapi", () => Results.Redirect("/scalar/v1"));
 
 app.MapControllers();
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
 
 app.Run();
