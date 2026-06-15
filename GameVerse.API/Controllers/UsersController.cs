@@ -42,7 +42,9 @@ namespace GameVerse.API.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUser), new { user });
+            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
+
+
         }
 
         [HttpDelete("{id}")]
