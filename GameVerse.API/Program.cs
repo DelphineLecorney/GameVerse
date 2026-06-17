@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
+using AutoMapper;
+using GameVerse.API.Mappings;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +14,10 @@ builder.Services.AddDbContext<GameVerseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
-
 builder.Services.AddOpenApi();
+
+builder.Services.AddAutoMapper(cfg => { }, typeof(AutoMapperProfile));
+
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
@@ -38,7 +43,6 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// 5. Pipeline
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
