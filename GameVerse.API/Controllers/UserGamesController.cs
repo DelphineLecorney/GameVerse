@@ -1,5 +1,6 @@
 ﻿using GameVerse.API.Data;
 using GameVerse.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,7 @@ namespace GameVerse.API.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpPost("add")]
         public async Task<IActionResult> AddUserGame(UserGame userGame)
         {
@@ -27,6 +29,7 @@ namespace GameVerse.API.Controllers
             return Ok(userGame);
         }
 
+        [Authorize]
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<UserGame>>> GetUserGames(int userId)
         {
@@ -38,6 +41,7 @@ namespace GameVerse.API.Controllers
             return Ok(list);
         }
 
+        [Authorize]
         [HttpGet("user/{userId}/favorites")]
         public async Task<ActionResult<IEnumerable<UserGame>>> GetFavorites(int userId)
         {
@@ -49,6 +53,7 @@ namespace GameVerse.API.Controllers
             return Ok(list);
         }
 
+        [Authorize]
         [HttpPut("update")]
         public async Task<IActionResult> UpdateRelation(UserGame updated)
         {
@@ -66,6 +71,7 @@ namespace GameVerse.API.Controllers
             return Ok(existing);
         }
 
+        [Authorize]
         [HttpDelete("remove")]
         public async Task<IActionResult> RemoveUserGame(int userId, int gameId)
         {

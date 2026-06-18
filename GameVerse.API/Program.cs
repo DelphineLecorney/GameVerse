@@ -1,11 +1,13 @@
+using AutoMapper;
 using GameVerse.API.Data;
+using GameVerse.API.Mappings;
+using GameVerse.API.Services;
+using GameVerse.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
-using AutoMapper;
-using GameVerse.API.Mappings;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,9 @@ builder.Services.AddAutoMapper(cfg => { }, typeof(AutoMapperProfile));
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 
 builder.Services.AddAuthentication(options =>
 {

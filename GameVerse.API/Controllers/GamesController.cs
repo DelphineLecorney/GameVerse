@@ -1,5 +1,6 @@
 ﻿using GameVerse.API.Data;
 using GameVerse.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,7 @@ namespace GameVerse.API.Controllers
             return Ok(game);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Game>> CreateGame(Game game)
         {
@@ -43,6 +45,7 @@ namespace GameVerse.API.Controllers
 
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGame(int id, Game game)
         {
@@ -56,6 +59,7 @@ namespace GameVerse.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(int id)
         {

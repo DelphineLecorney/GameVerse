@@ -1,6 +1,7 @@
 ﻿using GameVerse.API.Data;
 using GameVerse.API.DTOs.Auth;
 using GameVerse.API.Models;
+using GameVerse.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -16,18 +17,29 @@ namespace GameVerse.API.Controllers
     {
         private readonly GameVerseContext _context;
         private readonly IConfiguration _config;
+        private readonly IAuthService _authService;
 
-        public AuthController(GameVerseContext context, IConfiguration config)
+
+        public AuthController(GameVerseContext context, IConfiguration config, IAuthService authService)
         {
             _context = context;
             _config = config;
+            _authService = authService;
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(User user)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
-            user.CreatedAt = DateTime.UtcNow;
+            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+                return BadRequest("Email already in use");
+
+            var user = new User
+            {
+                Username = request.Username,
+                Email = request.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+                CreatedAt = DateTime.UtcNow
+            };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -36,46 +48,16 @@ namespace GameVerse.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
+            var response = await _authService.LoginAsync(request);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            if (response == null)
                 return Unauthorized("Invalid credentials");
 
-            var token = GenerateJwtToken(user);
-
-            return Ok(new AuthResponse
-            {
-                Token = token,
-                Username = user.Username
-            });
+            return Ok(response);
         }
 
-        private string GenerateJwtToken(User user)
-        {
-            var jwtSettings = _config.GetSection("Jwt");
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("username", user.Username)
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: jwtSettings["Issuer"],
-                audience: jwtSettings["Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(3),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
     }
 }
