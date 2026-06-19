@@ -1,8 +1,9 @@
-﻿using GameVerse.API.Data;
+﻿using AutoMapper;
+using GameVerse.API.DTOs.Games;
 using GameVerse.API.Models;
+using GameVerse.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GameVerse.API.Controllers
 {
@@ -10,66 +11,62 @@ namespace GameVerse.API.Controllers
     [Route("api/[controller]")]
     public class GamesController : ControllerBase
     {
-        private readonly GameVerseContext _context;
+        private readonly IGameService _gameService;
+        private readonly IMapper _mapper;
 
-        public GamesController(GameVerseContext context)
+        public GamesController(IGameService gameService, IMapper mapper)
         {
-            _context = context;
+            _gameService = gameService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            return Ok(await _context.Games.ToListAsync());
+            var games = await _gameService.GetAllAsync();
+            return Ok(_mapper.Map<IEnumerable<GameDto>>(games));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(int id)
         {
-            var game = await _context.Games.FindAsync(id);
+            var game = await _gameService.GetByIdAsync(id);
 
             if (game == null)
                 return NotFound();
 
-            return Ok(game);
+            return Ok(_mapper.Map<GameDto>(game));
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Game>> CreateGame(Game game)
+        public async Task<ActionResult> CreateGame(CreateGameDto dto)
         {
-            _context.Games.Add(game);
-            await _context.SaveChangesAsync();
+            var game = await _gameService.CreateAsync(dto);
+            var result = _mapper.Map<GameDto>(game);
 
-            return CreatedAtAction(nameof(GetGame), new { id = game.GameId }, game);
+            return CreatedAtAction(nameof(GetGame), new { id = game.GameId }, result);
 
         }
 
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGame(int id, Game game)
+        public async Task<IActionResult> UpdateGame(int id, UpdateGameDto dto)
         {
-            if (id != game.GameId)
+            var updated = await _gameService.UpdateAsync(id, dto);
+            if (updated == null)
+                return NotFound();
 
-                return BadRequest();
-
-            _context.Entry(game).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(_mapper.Map<GameDto>(updated));
         }
 
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(int id)
         {
-            var game = await _context.Games.FindAsync(id);
-
-            if (game == null)
+            var deleted = await _gameService.DeleteAsync(id);
+            if (!deleted)
                 return NotFound();
-
-            _context.Games.Remove(game);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
