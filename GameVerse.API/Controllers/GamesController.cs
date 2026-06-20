@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using GameVerse.API.DTOs.Games;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
@@ -13,11 +14,19 @@ namespace GameVerse.API.Controllers
     {
         private readonly IGameService _gameService;
         private readonly IMapper _mapper;
+        private readonly IValidator<CreateGameDto> _createValidator;
+        private readonly IValidator<UpdateGameDto> _updateGameValidator;
 
-        public GamesController(IGameService gameService, IMapper mapper)
+
+        public GamesController(
+            IGameService gameService, 
+            IMapper mapper, IValidator<CreateGameDto> createValidator, 
+            IValidator<UpdateGameDto> updateGameValidator)
         {
             _gameService = gameService;
             _mapper = mapper;
+            _createValidator = createValidator;
+            _updateGameValidator = updateGameValidator;
         }
 
         [HttpGet]
@@ -28,6 +37,8 @@ namespace GameVerse.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(GameDto), 200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<Game>> GetGame(int id)
         {
             var game = await _gameService.GetByIdAsync(id);
@@ -40,19 +51,31 @@ namespace GameVerse.API.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> CreateGame(CreateGameDto dto)
+        [ProducesResponseType(typeof(GameDto), 201)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> CreateGame(CreateGameDto dto)
         {
-            var game = await _gameService.CreateAsync(dto);
-            var result = _mapper.Map<GameDto>(game);
+            var validation = await _createValidator.ValidateAsync(dto);
+            if (!validation.IsValid)
+                return BadRequest(validation.ToDictionary());
 
-            return CreatedAtAction(nameof(GetGame), new { id = game.GameId }, result);
-
+            var created = await _gameService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetGame), 
+                new { id = created.GameId }, 
+                _mapper.Map<GameDto>(created));
         }
 
         [Authorize]
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(GameDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> UpdateGame(int id, UpdateGameDto dto)
         {
+            var validationResult = await _updateGameValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.ToDictionary());
+
             var updated = await _gameService.UpdateAsync(id, dto);
             if (updated == null)
                 return NotFound();
@@ -62,6 +85,8 @@ namespace GameVerse.API.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteGame(int id)
         {
             var deleted = await _gameService.DeleteAsync(id);

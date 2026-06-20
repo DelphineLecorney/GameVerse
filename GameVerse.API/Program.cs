@@ -1,4 +1,4 @@
-using AutoMapper;
+using FluentValidation;
 using GameVerse.API.Data;
 using GameVerse.API.Mappings;
 using GameVerse.API.Services;
@@ -14,6 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<GameVerseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();

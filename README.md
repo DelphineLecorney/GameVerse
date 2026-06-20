@@ -1,7 +1,6 @@
 # 🎮 GameVerse API  
-API RESTful développée en .NET 10 permettant de gérer des utilisateurs, des jeux vidéo et leurs relations (wishlist, favoris, bibliothèque, etc.).  
-Le projet utilise Entity Framework Core et une base de données Azure SQL.
-
+API RESTful développée en **.NET 10**, permettant de gérer des utilisateurs, des jeux vidéo et leurs relations (wishlist, favoris, bibliothèque, etc.).  
+Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
 
 ![.NET](https://img.shields.io/badge/.NET-10-blueviolet)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
@@ -10,40 +9,50 @@ Le projet utilise Entity Framework Core et une base de données Azure SQL.
 
 ---
 
-## 🚀 Fonctionnalités actuelles
+## 🚀 Fonctionnalités
 
-### ✔ Initialisation du projet
-- Création d’un projet **ASP.NET Core Web API (.NET 10)**  
-- Mise en place d’une architecture propre (Models, Data, Services, Controllers)
+### 👤 Gestion des utilisateurs
+- Inscription & connexion  
+- Récupération, mise à jour et suppression d’un utilisateur  
+- Authentification sécurisée via **JWT**
 
-### ✔ Gestion sécurisée des secrets
-- Activation du **User Secrets Manager**
-- Stockage sécurisé de la chaîne de connexion Azure SQL
-- `.gitignore` configuré pour exclure :
-  - `Secrets.json`
-  - `.env`
-  - `appsettings.Development.json`
-  - `UserSecrets/`
-  - `bin/`, `obj/`, etc.
+### 🎮 Gestion des jeux
+- CRUD complet  
+- DTOs dédiés (Create, Update, Read)  
+- AutoMapper configuré  
+- Endpoints sensibles protégés
 
-### ✔ Base de données Azure SQL
-- Création d’une base **GameVerse** sur Azure
-- Exécution du script SQL initial
-- Connexion testée et validée depuis l’API
+### ❤️ Relations User ↔ Game
+- Ajout d’un jeu à un utilisateur (wishlist, favoris, owned…)  
+- Mise à jour de la relation (type, rating)  
+- Suppression d’un jeu de la bibliothèque  
+- Listing des jeux d’un utilisateur (dont favoris)  
+- DTOs dédiés
 
-### ✔ Entity Framework Core
-- Installation des packages :
-  - `Microsoft.EntityFrameworkCore`
-  - `Microsoft.EntityFrameworkCore.SqlServer`
-  - `Microsoft.EntityFrameworkCore.Design`
-- Création du `GameVerseContext`
-- Définition d’une **clé composite** pour `UserGame`
-- Création et application de la migration `Initial`
-- Vérification des tables dans Azure :
-  - `Users`
-  - `Games`
-  - `UserGames`
-  - `__EFMigrationsHistory`
+### 🔐 Sécurité & Secrets
+- **User Secrets Manager** activé  
+- Connexion Azure SQL sécurisée  
+- `.gitignore` renforcé (secrets, env, appsettings, bin/obj…)
+
+### 🗄 Base de données Azure SQL
+- Base **GameVerse** déployée sur Azure  
+- Migration initiale appliquée  
+- Tables : `Users`, `Games`, `UserGames`, `__EFMigrationsHistory`
+
+### 🧱 Entity Framework Core
+- Contexte `GameVerseContext`  
+- Clé composite pour `UserGame`  
+- Relation Many-to-Many configurée via Fluent API  
+- Migration `Initial` appliquée avec succès
+
+### ✔ Validation (FluentValidation)
+- Suppression des DataAnnotations  
+- Validateurs dédiés par entité  
+- Pipeline global (`ValidationFilter`) renvoyant automatiquement les erreurs en **400 Bad Request**
+
+### 📘 Documentation (Scalar)
+- Intégration OpenAPI (`AddOpenApi`)  
+- Interface Scalar moderne accessible via `/scalar`
 
 ---
 
@@ -52,28 +61,43 @@ Le projet utilise Entity Framework Core et une base de données Azure SQL.
 ```
 GameVerse/
 │
-├── docs/
-│   ├── images/
-│
 ├── GameVerse.API/
 │   ├── Controllers/
+│   │   ├── AuthController.cs
+│   │   ├── UsersController.cs
+│   │   ├── GamesController.cs
+│   │   └── UserGamesController.cs
+│   │
+│   ├── DTOs/
+│   │   ├── Auth/
+│   │   ├── Games/
+│   │   ├── Users/
+│   │   └── UserGames/
+│   │
+│   ├── Services/
+│   │   ├── Interfaces/
+│   │   ├── AuthService.cs
+│   │   ├── UserService.cs
+│   │   ├── GameService.cs
+│   │   └── UserGameService.cs
+│   │
+│   ├── Mappings/
+│   │   └── AutoMapperProfile.cs
+│   │
 │   ├── Data/
 │   │   └── GameVerseContext.cs
+│   │
 │   ├── Models/
 │   │   ├── User.cs
 │   │   ├── Game.cs
 │   │   └── UserGame.cs
-│   ├── Properties/
-│   ├── appsettings.json
+│   │
 │   ├── Program.cs
-│   └── README.md
-├── GameVerse.Tests/
-├── GameVerse.Client/
-├── GameVerse.Domain/
-├── GameVerse.Infrastructure/
+│   └── appsettings.json
+│
 └── README.md
-```
 
+```
 
 ---
 
@@ -91,6 +115,48 @@ La chaîne de connexion est stockée dans les **User Secrets** :
 
 ---
 
+## 🧱 Configuration Modèle & Pivot EF Core
+
+### Modèle de données `UserGame`
+
+```csharp
+public class UserGame
+{
+    public int UserId { get; set; }
+    public int GameId { get; set; }
+    public string RelationType { get; set; } = "Wishlist";
+    public DateTime AddedAt { get; set; } = DateTime.Now;
+    public int? Rating { get; set; }
+
+    public User? User { get; set; }
+    public Game? Game { get; set; }
+}
+```
+
+### Configuration Fluent API (`GameVerseContext`)
+
+```csharp
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // Configuration de la clé primaire composite
+    modelBuilder.Entity<UserGame>()
+        .HasKey(ug => new { ug.UserId, ug.GameId });
+
+    // Pivot Many-to-Many
+    modelBuilder.Entity<UserGame>()
+        .HasOne(ug => ug.User)
+        .WithMany(u => u.UserGames)
+        .HasForeignKey(ug => ug.UserId);
+
+    modelBuilder.Entity<UserGame>()
+        .HasOne(ug => ug.Game)
+        .WithMany(g => g.UserGames)
+        .HasForeignKey(ug => ug.GameId);
+}
+```
+
+---
+
 ## 📸 Migration appliquée sur Azure SQL
 
 Voici la migration EF Core appliquée avec succès sur Azure :
@@ -98,33 +164,60 @@ Voici la migration EF Core appliquée avec succès sur Azure :
 ![Migration Azure](docs/images/migration-azure.png)
 
 ---
+
 ## 🔐 Sécurité
 
-###  Authentification JWT
+### Authentification JWT
 
 L’API utilise un système d’authentification basé sur **JSON Web Tokens (JWT)** pour sécuriser les endpoints.
-- Tokens signés
-- Validation de l’issuer, audience et signature
-- Expiration automatique
+- Tokens signés de manière cryptographique.
+- Validation rigoureuse de l’issuer, de l’audience et de la signature.
+- Expiration automatique configurée.
 
-### 🔑 Fonctionnement
-- Lors de l’inscription, un utilisateur est créé dans la base.
-- Lors de la connexion, un **token JWT signé** est généré.
-- Ce token doit être envoyé dans les requêtes protégées via l’en-tête :
-
+### 🔑 Fonctionnement du flux
+- Lors de l’inscription, un utilisateur est créé de manière unique en base de données.
+- Lors de la connexion, un **token JWT signé** est généré par le serveur.
+- Ce token doit être envoyé dans chaque requête protégée via l’en-tête HTTP suivant :
+```http
+Authorization: Bearer <token>
+```
 
 ### ✔ Protection des secrets
-- User Secrets activé
-- Aucun secret dans GitHub
-- Connexion Azure SQL sécurisée (Encrypt=True)
+- User Secrets activé (aucun jeton ni clé en clair dans le code).
+- Aucun secret ou fichier de configuration sensible poussé sur GitHub.
+- Connexions Azure SQL cryptées de bout en bout (`Encrypt=True`).
 
 ### ✔ HTTPS obligatoire
-L’API force la redirection HTTPS.
+L’API force l’utilisation et la redirection systématique vers le protocole sécurisé HTTPS.
 
-### ✔ Bonnes pratiques
-- Ne jamais stocker les mots de passe en clair
-- Utiliser BCrypt pour le hashing
-- Ne jamais exposer les entités EF Core directement
+### ✔ Bonnes pratiques de conception
+- Ne jamais stocker les mots de passe des utilisateurs en clair : utilisation de **BCrypt** pour le salage et le hashing.
+- Ne jamais exposer les entités EF Core directement sur les contrôleurs afin de prévenir les injections de masse et les fuites de métadonnées (isolation totale via les **DTOs**).
+- Architecture logicielle entièrement asynchrone (`async/await`) pour maximiser la disponibilité des threads du serveur web.
+
+---
+
+## 📘 Accès à la Documentation (Scalar)
+
+Le pipeline OpenAPI et l'interface utilisateur Scalar sont initialisés dans le fichier `Program.cs`. 
+
+*   **Adresse locale de développement** : `https://localhost:7000/scalar`
+
+```csharp
+builder.Services.AddOpenApi();
+
+// Enregistrement automatique des validateurs du projet
+builder.Services.AddValidatorsFromAssemblyContaining<UserGameCreationValidator>();
+
+var app = builder.Build();
+
+app.MapOpenApi();
+app.UseScalar(options =>
+{
+    options.Title = "GameVerse API";
+    options.Theme = ScalarTheme.Dark;
+});
+```
 
 ---
 
@@ -136,9 +229,8 @@ L’API force la redirection HTTPS.
 - Docker + Azure Container Registry
 - Kubernetes (AKS)
 
-### 🧪 Étapes de déploiement (Docker)
-```
-bash
+### 🧪 Étapes de déploiement locales (Docker)
+```bash
 docker build -t gameverse-api .
 docker run -p 8080:80 gameverse-api
 ```

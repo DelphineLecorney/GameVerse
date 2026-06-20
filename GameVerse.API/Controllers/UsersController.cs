@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using GameVerse.API.DTOs.Users;
 using GameVerse.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -13,14 +14,21 @@ namespace GameVerse.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IValidator<UpdateUserDto> _updateUserValidator;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(
+            IUserService userService,
+            IMapper mapper,
+            IValidator<UpdateUserDto> updateUserValidator)
         {
             _userService = userService;
             _mapper = mapper;
+            _updateUserValidator = updateUserValidator;
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(UserDto), 200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _userService.GetByIdAsync(id);
@@ -31,8 +39,17 @@ namespace GameVerse.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(UserDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> UpdateUser(int id, UpdateUserDto dto)
         {
+            var validationResult = await _updateUserValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.ToDictionary());
+            }
+
             var updated = await _userService.UpdateAsync(id, dto);
             if (updated == null)
                 return NotFound();
@@ -41,6 +58,8 @@ namespace GameVerse.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var deleted = await _userService.DeleteAsync(id);
