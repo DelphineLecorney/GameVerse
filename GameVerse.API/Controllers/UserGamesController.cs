@@ -1,91 +1,69 @@
-﻿using GameVerse.API.Data;
-using GameVerse.API.Models;
+﻿
+using AutoMapper;
+using GameVerse.API.DTOs.UserGame;
+using GameVerse.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GameVerse.API.Controllers
-{
+{   
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserGamesController : ControllerBase
     {
-        private readonly GameVerseContext _context;
+        private readonly IUserGameService _userGameService;
+        private readonly IMapper _mapper;
 
-        public UserGamesController(GameVerseContext context)
+        public UserGamesController(IUserGameService userGameService, IMapper mapper)
         {
-            _context = context;
+            _userGameService = userGameService;
+            _mapper = mapper;
         }
-
-        [Authorize]
+        
         [HttpPost("add")]
-        public async Task<IActionResult> AddUserGame(UserGame userGame)
+        public async Task<IActionResult> AddUserGame(AddUserGameDto userGameDto)
         {
-            userGame.AddedAt = DateTime.UtcNow;
-
-            _context.UserGames.Add(userGame);
-            await _context.SaveChangesAsync();
-
-            return Ok(userGame);
+            var userGame = await _userGameService.AddAsync(userGameDto);
+            return Ok(_mapper.Map<UserGameDto>(userGame));
         }
 
-        [Authorize]
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<UserGame>>> GetUserGames(int userId)
+        public async Task<IActionResult> GetUserGames(int userId)
         {
-            var list = await _context.UserGames
-                .Include(ug => ug.Game)
-                .Where(ug => ug.UserId == userId)
-                .ToListAsync();
-
-            return Ok(list);
+            var list = await _userGameService.GetByUserAsync(userId);
+            return Ok(_mapper.Map<IEnumerable<UserGameDto>>(list));
         }
 
-        [Authorize]
         [HttpGet("user/{userId}/favorites")]
-        public async Task<ActionResult<IEnumerable<UserGame>>> GetFavorites(int userId)
+        public async Task<IActionResult> GetFavorites(int userId)
         {
-            var list = await _context.UserGames
-                .Include(ug => ug.Game)
-                .Where(ug => ug.UserId == userId && ug.RelationType == "favorite")
-                .ToListAsync();
-
-            return Ok(list);
+            var list = await _userGameService.GetFavoritesAsync(userId);
+            return Ok(_mapper.Map<IEnumerable<UserGameDto>>(list));
         }
 
-        [Authorize]
-        [HttpPut("update")]
-        public async Task<IActionResult> UpdateRelation(UserGame updated)
+        [HttpPut("{userId}/{gameId}")]
+        public async Task<IActionResult> UpdateRelation(int userId, int gameId, UpdateUserGameDto updateUserGameDto)
         {
-            var existing = await _context.UserGames
-                .FirstOrDefaultAsync(ug => ug.UserId == updated.UserId && ug.GameId == updated.GameId);
-
-            if (existing == null)
+            var updated = await _userGameService.UpdateAsync(userId, gameId, updateUserGameDto);
+            if (updated == null)
+            {
                 return NotFound();
+            }
 
-            existing.RelationType = updated.RelationType;
-            existing.Rating = updated.Rating;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(existing);
+            return Ok(_mapper.Map<UserGameDto>(updated));
         }
 
-        [Authorize]
-        [HttpDelete("remove")]
+        [HttpDelete("{userId}/{gameId}")]
         public async Task<IActionResult> RemoveUserGame(int userId, int gameId)
         {
-            var entry = await _context.UserGames
-                .FirstOrDefaultAsync(ug => ug.UserId == userId && ug.GameId == gameId);
-
-            if (entry == null)
+            var deleted = await _userGameService.RemoveAsync(userId,gameId);
+            if(!deleted)
+            {
                 return NotFound();
-
-            _context.UserGames.Remove(entry);
-            await _context.SaveChangesAsync();
+            }
 
             return NoContent();
         }
-
     }
 }

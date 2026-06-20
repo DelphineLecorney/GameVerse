@@ -18,7 +18,7 @@ namespace GameVerse.API.Data
         {
             // Clé composite pour UserGame
             modelBuilder.Entity<UserGame>()
-                .HasKey(ug => new { ug.UserId, ug.GameId, ug.RelationType });
+                .HasKey(ug => new { ug.UserId, ug.GameId });
 
             modelBuilder.Entity<UserGame>()
                 .HasOne(ug => ug.User)
