@@ -2,12 +2,10 @@
 using GameVerse.API.DTOs.Auth;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 
 namespace GameVerse.API.Controllers
 {
@@ -47,17 +45,46 @@ namespace GameVerse.API.Controllers
             return Ok(new { message = "User registered successfully" });
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest request)
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> Me()
         {
-            var response = await _authService.LoginAsync(request);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (response == null)
-                return Unauthorized("Invalid credentials");
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
 
-            return Ok(response);
+            if (user == null)
+                return NotFound();
+
+            return Ok(new
+            {
+                user.UserId,
+                user.Username,
+                user.Email,
+                user.CreatedAt,
+                user.LastLogin
+            });
         }
 
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (user == null)
+                return Unauthorized("Invalid email or password");
+
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+                return Unauthorized("Invalid email or password");
+
+            user.LastLogin = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Login successful" });
+        }
 
     }
 }

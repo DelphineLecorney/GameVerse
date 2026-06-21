@@ -14,7 +14,6 @@ namespace GameVerse.API.Validators.Users
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("L'email est obligatoire.")
                 .EmailAddress().WithMessage("L'email n'est pas valide.");
-
         }
     }
 }

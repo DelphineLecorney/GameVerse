@@ -36,7 +36,7 @@ namespace GameVerse.API.Controllers
         [ProducesResponseType(409)]
         public async Task<IActionResult> AddUserGame(AddUserGameDto userGameDto)
         {
-            var validation = await _addValidator.ValidateAsyncuserGameDto);
+            var validation = await _addValidator.ValidateAsync(userGameDto);
             if (!validation.IsValid)
                 return BadRequest(validation.ToDictionary());
 
