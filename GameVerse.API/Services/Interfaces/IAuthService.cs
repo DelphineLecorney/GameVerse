@@ -8,5 +8,7 @@ namespace GameVerse.API.Services.Interfaces
         Task<bool> EmailExists(string email);
         Task<User> RegisterAsync(RegisterRequest request);
         Task<AuthResponse> LoginAsync(LoginRequest request);
+
+        string GenerateJwtToken(User user);
     }
 }

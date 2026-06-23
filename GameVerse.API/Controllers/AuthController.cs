@@ -5,7 +5,6 @@ using GameVerse.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace GameVerse.API.Controllers
 {
@@ -49,13 +48,25 @@ namespace GameVerse.API.Controllers
         [HttpGet("me")]
         public async Task<IActionResult> Me()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIdStr = User.FindFirst("sub")?.Value;
+
+            if (string.IsNullOrEmpty(userIdStr))
+            {
+                return Unauthorized(new { message = "Jeton d'authentification mal formé (sub manquant)." });
+            }
+
+            if (!int.TryParse(userIdStr, out int userId))
+            {
+                return BadRequest(new { message = "Le format de l'ID utilisateur est incorrect." });
+            }
 
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserId.ToString() == userId);
+                .FirstOrDefaultAsync(u => u.UserId == userId);
 
             if (user == null)
-                return NotFound();
+            {
+                return NotFound(new { message = $"L'utilisateur avec l'ID {userId} n'existe pas en base." });
+            }
 
             return Ok(new
             {
@@ -68,23 +79,29 @@ namespace GameVerse.API.Controllers
         }
 
 
+
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == request.Email);
 
-            if (user == null)
-                return Unauthorized("Invalid email or password");
-
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
                 return Unauthorized("Invalid email or password");
 
             user.LastLogin = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Login successful" });
+            var token = _authService.GenerateJwtToken(user);
+
+            return Ok(new
+            {
+                message = "Login successful",
+                token
+            });
         }
+
 
     }
 }

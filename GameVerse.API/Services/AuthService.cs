@@ -2,11 +2,11 @@
 using GameVerse.API.DTOs.Auth;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace GameVerse.API.Services
@@ -59,7 +59,7 @@ namespace GameVerse.API.Services
             };
         }
 
-        private string GenerateJwtToken(User user)
+        public string GenerateJwtToken(User user)
         {
             var jwtSettings = _config.GetSection("Jwt");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
@@ -84,5 +84,4 @@ namespace GameVerse.API.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
-
 }
