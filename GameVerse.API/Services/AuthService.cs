@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 
@@ -52,10 +53,59 @@ namespace GameVerse.API.Services
 
             var token = GenerateJwtToken(user);
 
+            var refreshToken = new RefreshToken
+            {
+                UserId = user.UserId,
+                Token = GenerateRefreshToken(),
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                CreatedAt = DateTime.UtcNow,
+                IsRevoked = false
+            };
+
+            _context.RefreshTokens.Add(refreshToken);
+            await _context.SaveChangesAsync();
+
             return new AuthResponse
             {
                 Token = token,
+                RefreshToken = refreshToken.Token,
                 Username = user.Username
+            };
+        }
+
+
+        public async Task<AuthResponse> RefreshTokenAsync(string refreshToken)
+        {
+            var storedToken = await _context.RefreshTokens
+                .Include(rt => rt.User)
+                .FirstOrDefaultAsync(rt => rt.Token == refreshToken);
+
+            if (storedToken == null || storedToken.IsRevoked)
+                return null!;
+
+            if (storedToken.ExpiresAt < DateTime.UtcNow)
+                return null!;
+
+            storedToken.IsRevoked = true;
+
+            var newJwt = GenerateJwtToken(storedToken.User!);
+
+            var newRefresh = new RefreshToken
+            {
+                UserId = storedToken.UserId,
+                Token = GenerateRefreshToken(),
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.RefreshTokens.Add(newRefresh);
+            await _context.SaveChangesAsync();
+
+            return new AuthResponse
+            {
+                Token = newJwt,
+                RefreshToken = newRefresh.Token,
+                Username = storedToken.User!.Username
             };
         }
 
@@ -83,5 +133,11 @@ namespace GameVerse.API.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        private static string GenerateRefreshToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
+
     }
 }

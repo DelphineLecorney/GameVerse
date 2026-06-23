@@ -1,10 +1,13 @@
 ﻿using GameVerse.API.Data;
-using GameVerse.API.DTOs.Auth;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AuthLoginRequest = GameVerse.API.DTOs.Auth.LoginRequest;
+using AuthRegisterRequest = GameVerse.API.DTOs.Auth.RegisterRequest;
+
 
 namespace GameVerse.API.Controllers
 {
@@ -25,10 +28,10 @@ namespace GameVerse.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register(AuthRegisterRequest request)
         {
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-                return BadRequest("Email already in use");
+                return BadRequest("Email déjà utilisé");
 
             var user = new User
             {
@@ -41,7 +44,7 @@ namespace GameVerse.API.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "User registered successfully" });
+            return Ok(new { message = "Utilisateur enregistré avec succès" });
         }
 
         [Authorize]
@@ -78,30 +81,27 @@ namespace GameVerse.API.Controllers
             });
         }
 
-
-
-
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login(AuthLoginRequest request)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
+            var result = await _authService.LoginAsync(request);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-                return Unauthorized("Invalid email or password");
+            if (result == null)
+                return Unauthorized(new { message = "Email ou mot de passe invalide" });
 
-            user.LastLogin = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-
-            var token = _authService.GenerateJwtToken(user);
-
-            return Ok(new
-            {
-                message = "Login successful",
-                token
-            });
+            return Ok(result);
         }
 
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
+        {
+            var result = await _authService.RefreshTokenAsync(request.RefreshToken);
+
+            if (result == null)
+                return Unauthorized(new { message = "Jeton d'actualisation non valide ou périmé" });
+
+            return Ok(result);
+        }
 
     }
 }
