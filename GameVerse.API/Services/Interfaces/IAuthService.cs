@@ -9,6 +9,7 @@ namespace GameVerse.API.Services.Interfaces
         Task<User> RegisterAsync(RegisterRequest request);
         Task<AuthResponse> LoginAsync(LoginRequest request);
         Task<AuthResponse> RefreshTokenAsync(string refreshToken);
+        Task LogoutAsync(int userId);
 
     }
 }

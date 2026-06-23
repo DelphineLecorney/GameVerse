@@ -103,5 +103,19 @@ namespace GameVerse.API.Controllers
             return Ok(result);
         }
 
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var userIdStr = User.FindFirst("sub")?.Value;
+
+            if (!int.TryParse(userIdStr, out int userId))
+                return Unauthorized(new { message = "Utilisateur non reconnu" });
+
+            await _authService.LogoutAsync(userId);
+
+            return Ok(new { message = "Déconnexion réussie" });
+        }
+
     }
 }

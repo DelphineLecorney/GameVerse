@@ -139,5 +139,17 @@ namespace GameVerse.API.Services
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
 
+        public async Task LogoutAsync(int userId)
+        {
+            var tokens = await _context.RefreshTokens
+                .Where(rt => rt.UserId == userId && !rt.IsRevoked)
+                .ToListAsync();
+
+            foreach (var token in tokens)
+                token.IsRevoked = true;
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
