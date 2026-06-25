@@ -11,6 +11,7 @@ namespace GameVerse.API.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? LastLogin { get; set; }
 
+        public string Role { get; set; } = "User";
         [NotMapped]
         public string Password { get; set; } = string.Empty;
 

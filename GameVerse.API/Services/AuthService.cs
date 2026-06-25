@@ -120,7 +120,8 @@ namespace GameVerse.API.Services
             {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("username", user.Username)
+            new Claim("username", user.Username),
+            new Claim(ClaimTypes.Role, user.Role)
         };
 
             var token = new JwtSecurityToken(
