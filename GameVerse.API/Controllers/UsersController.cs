@@ -57,6 +57,20 @@ namespace GameVerse.API.Controllers
             return Ok(_mapper.Map<UserDto>(updated));
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/role")]
+        public async Task<IActionResult> UpdateRole(int id, UpdateRoleDto dto)
+        {
+            var updated = await _userService.UpdateRoleAsync(id, dto.Role);
+
+            if (!updated)
+                return NotFound(new { message = "Utilisateur introuvable" });
+
+            return NoContent();
+        }
+
+
+
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

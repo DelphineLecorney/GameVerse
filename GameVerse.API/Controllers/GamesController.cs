@@ -49,7 +49,7 @@ namespace GameVerse.API.Controllers
             return Ok(_mapper.Map<GameDto>(game));
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(typeof(GameDto), 201)]
         [ProducesResponseType(400)]
@@ -65,7 +65,7 @@ namespace GameVerse.API.Controllers
                 _mapper.Map<GameDto>(created));
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(GameDto), 200)]
         [ProducesResponseType(400)]
@@ -83,7 +83,7 @@ namespace GameVerse.API.Controllers
             return Ok(_mapper.Map<GameDto>(updated));
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

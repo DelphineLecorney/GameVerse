@@ -2,6 +2,7 @@
 using GameVerse.API.DTOs.Users;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
+using System.Data;
 
 namespace GameVerse.API.Services
 {
@@ -32,6 +33,7 @@ namespace GameVerse.API.Services
             return user;
         }
 
+
         public async Task<bool> DeleteAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -42,5 +44,18 @@ namespace GameVerse.API.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> UpdateRoleAsync(int userId, string role)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return false;
+
+            user.Role = role;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
     }
 }
