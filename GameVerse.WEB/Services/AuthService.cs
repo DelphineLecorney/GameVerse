@@ -1,14 +1,18 @@
 ﻿using System.Net.Http.Json;
+using GameVerse.WEB.Models;
+
 
 namespace GameVerse.WEB.Services;
 
 public class AuthService
 {
     private readonly HttpClient _http;
+    private readonly AuthState _authState;
 
-    public AuthService(HttpClient http)
+    public AuthService(HttpClient http, AuthState authState)
     {
         _http = http;
+        _authState = authState;
     }
 
     public async Task<string?> LoginAsync(string email, string password)
@@ -26,13 +30,19 @@ public class AuthService
             if (!response.IsSuccessStatusCode)
                 return null;
 
-            var token = await response.Content.ReadAsStringAsync();
+            var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
 
-            return token;
+            if (authResponse == null)
+                return null;
+
+            _authState.SetAuth(authResponse.Token, authResponse.Username);
+
+            return authResponse.Token;
         }
         catch
         {
             return null;
         }
     }
+
 }

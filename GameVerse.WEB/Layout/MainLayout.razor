@@ -1,4 +1,17 @@
-﻿@inherits LayoutComponentBase
+﻿@using GameVerse.WEB.Services
+@inherits LayoutComponentBase
+
+@inject AuthState AuthState
+
+@if (AuthState.IsAuthenticated)
+{
+    <p>Connecté en tant que @AuthState.Username</p>
+}
+else
+{
+    <p>Non connecté</p>
+}
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -14,3 +27,5 @@
         </article>
     </main>
 </div>
+
+
