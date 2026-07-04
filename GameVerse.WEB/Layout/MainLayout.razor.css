@@ -75,3 +75,22 @@ main {
         padding-right: 1.5rem !important;
     }
 }
+
+
+.auth-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+    .auth-bar p {
+        margin: 0;
+        font-weight: 500;
+    }
+
+.logout-btn {
+    margin-left: 1rem;
+}

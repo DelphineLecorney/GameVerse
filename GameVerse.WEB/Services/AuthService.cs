@@ -45,4 +45,10 @@ public class AuthService
         }
     }
 
+    public void Logout()
+    {
+        _authState.Logout();
+    }
+
+
 }
