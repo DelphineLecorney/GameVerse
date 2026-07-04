@@ -32,6 +32,19 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IUserGameService, UserGameService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowGameVerse",
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:7144")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -58,6 +71,8 @@ var app = builder.Build();
 
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowGameVerse");
 
 app.UseAuthentication();
 app.UseAuthorization();
