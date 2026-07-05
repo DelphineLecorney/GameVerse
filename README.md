@@ -234,3 +234,54 @@ app.UseScalar(options =>
 docker build -t gameverse-api .
 docker run -p 8080:80 gameverse-api
 ```
+
+## 🗂 Structure du projet Web
+
+```bash
+ 
+GameVerse.WEB/
+│
+├── Pages/
+│   ├── Home.razor
+│   ├── Login.razor
+│   ├── Register.razor
+│   ├── Profile.razor
+│   ├── Library.razor
+│   ├── Wishlist.razor
+│   ├── Favorites.razor
+│   └── NotAuthorized.razor
+│
+├── Layout/
+│   ├── MainLayout.razor
+│   └── NavMenu.razor
+│
+├── Services/
+│   ├── AuthState.cs
+│   ├── CustomAuthStateProvider.cs
+│   └── AuthService.cs
+│
+└── Program.cs
+
+```
+
+## 🔐 Authentification Web
+
+L’application GameVerse.WEB utilise une authentification basée sur **JWT** fournie par l’API GameVerse.
+
+Une fois connecté, l’utilisateur accède à son espace personnel :
+
+- Profil
+- Bibliothèque de jeux
+- Wishlist
+- Favoris
+
+La navigation s’adapte automatiquement à l’état de connexion :
+
+- **Non connecté** : Home, Register, Login  
+- **Connecté** : Home, Profil, Bibliothèque, Wishlist, Favoris, Logout  
+
+Les pages sensibles sont protégées via l’attribut Razor :
+
+```razor
+@attribute [Authorize]
+
