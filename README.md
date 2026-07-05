@@ -8,10 +8,10 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
 ![Platform](https://img.shields.io/badge/platform-Azure-blue)
 
 ---
-
- ![Register](docs/images/Register.png)  ![Login](docs/images/Login.png) 
- ![Home](docs/images/Home.png) 
-
+ 
+| Inscription | Connexion | Accueil |
+| :---: | :---: | :---: |
+| <img src="docs/images/Register.png" width="200"> | <img src="docs/images/Login.png" width="200"> | <img src="docs/images/Home.png" width="200"> |
 
 ---
 
