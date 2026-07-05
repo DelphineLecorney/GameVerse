@@ -9,6 +9,12 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
 
 ---
 
+ ![Register](docs/images/Register.png)  ![Login](docs/images/Login.png) 
+ ![Home](docs/images/Home.png) 
+
+
+---
+
 ## 🚀 Fonctionnalités
 
 ### 👤 Gestion des utilisateurs
