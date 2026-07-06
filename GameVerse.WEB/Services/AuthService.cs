@@ -1,5 +1,6 @@
-﻿using System.Net.Http.Json;
-using GameVerse.WEB.Models;
+﻿using GameVerse.WEB.Models;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 
 namespace GameVerse.WEB.Services;
@@ -45,10 +46,26 @@ public class AuthService
         }
     }
 
+    public async Task<UserDto?> GetCurrentUserAsync()
+    {
+        if (!_authState.IsAuthenticated)
+            return null;
+
+        _http.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", _authState.Token);
+
+        var response = await _http.GetAsync("api/auth/me");
+
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        return await response.Content.ReadFromJsonAsync<UserDto>();
+    }
+
+
     public void Logout()
     {
         _authState.Logout();
     }
-
 
 }

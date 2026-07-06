@@ -9,9 +9,26 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
 
 ---
  
-| Inscription | Connexion | Accueil |
-| :---: | :---: | :---: |
-| <img src="docs/images/Register.png" width="200"> | <img src="docs/images/Login.png" width="200"> | <img src="docs/images/Home.png" width="200"> |
+<table>
+  <thead>
+    <tr>
+      <th align="center" width="50%">Inscription</th>
+      <th align="center" width="50%">Connexion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center"><img src="docs/images/Register.png" width="200"></td>
+      <td align="center"><img src="docs/images/Login.png" width="200"></td>
+    </tr>
+    <tr>
+      <th colspan="2" align="center">Accueil</th>
+    </tr>
+    <tr>
+      <td colspan="2" align="center"><img src="docs/images/Home.png" width="500"></td>
+    </tr>
+  </tbody>
+</table>
 
 ---
 
@@ -290,4 +307,4 @@ Les pages sensibles sont protégées via l’attribut Razor :
 
 ```razor
 @attribute [Authorize]
-
+```
