@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using GameVerse.API.DTOs.UserGame;
+using GameVerse.SHARED.DTOs.UserGame;
 
 namespace GameVerse.API.Validators.UserGames
 {

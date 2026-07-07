@@ -1,4 +1,5 @@
-﻿using GameVerse.WEB.Models;
+﻿using GameVerse.SHARED.DTOs.Auth;
+using GameVerse.SHARED.DTOs.Users;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 

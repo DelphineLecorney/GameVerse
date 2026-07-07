@@ -1,5 +1,5 @@
 ﻿using GameVerse.API.Data;
-using GameVerse.API.DTOs.UserGame;
+using GameVerse.SHARED.DTOs.UserGame;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;

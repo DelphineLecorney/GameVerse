@@ -1,7 +1,7 @@
 ﻿using GameVerse.API.Data;
-using GameVerse.API.DTOs.Auth;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
+using GameVerse.SHARED.DTOs.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

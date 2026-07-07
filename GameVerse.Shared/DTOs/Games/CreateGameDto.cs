@@ -1,6 +1,6 @@
-﻿namespace GameVerse.API.DTOs.Games
+﻿namespace GameVerse.SHARED.DTOs.Games
 {
-    public class UpdateGameDto
+    public class CreateGameDto
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

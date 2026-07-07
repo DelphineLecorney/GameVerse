@@ -1,4 +1,4 @@
-﻿namespace GameVerse.API.DTOs.Games
+﻿namespace GameVerse.SHARED.DTOs.Games
 {
     public class GameDto
     {

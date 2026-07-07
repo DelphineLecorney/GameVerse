@@ -1,4 +1,4 @@
-﻿namespace GameVerse.API.DTOs.Users
+﻿namespace GameVerse.SHARED.DTOs.Users
 {
     public class UpdateUserDto
     {

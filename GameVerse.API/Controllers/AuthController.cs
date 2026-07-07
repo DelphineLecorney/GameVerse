@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AuthLoginRequest = GameVerse.API.DTOs.Auth.LoginRequest;
-using AuthRegisterRequest = GameVerse.API.DTOs.Auth.RegisterRequest;
+using AuthLoginRequest = GameVerse.SHARED.DTOs.Auth.LoginRequest;
+using AuthRegisterRequest = GameVerse.SHARED.DTOs.Auth.RegisterRequest;
 
 
 namespace GameVerse.API.Controllers

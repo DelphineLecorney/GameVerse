@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using GameVerse.API.DTOs.Auth;
-using GameVerse.API.DTOs.Games;
-using GameVerse.API.DTOs.UserGame;
-using GameVerse.API.DTOs.Users;
+using GameVerse.SHARED.DTOs.Auth;
+using GameVerse.SHARED.DTOs.Games;
+using GameVerse.SHARED.DTOs.UserGame;
+using GameVerse.SHARED.DTOs.Users;
 using GameVerse.API.Models;
 
 

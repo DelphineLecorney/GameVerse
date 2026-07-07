@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using GameVerse.WEB.Services;
-using GameVerse.WEB.Models;
+using GameVerse.SHARED.DTOs.Users;
 
 namespace GameVerse.WEB.Pages;
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using GameVerse.API.DTOs.Users;
+using GameVerse.SHARED.DTOs.Users;
 using GameVerse.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

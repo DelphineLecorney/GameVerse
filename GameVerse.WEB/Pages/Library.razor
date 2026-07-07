@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Authorization
+
+@page "/library"
+@attribute [Authorize]
+
+<h2>Ma bibliothèque</h2>
+
+@if (Games == null)
+{
+    <p>Chargement...</p>
+}
+else if (!Games.Any())
+{
+    <p>Tu n’as encore aucun jeu dans ta bibliothèque.</p>
+}
+else
+{
+    <div class="games-grid">
+        @foreach (var game in Games)
+        {
+            <div class="game-card">
+                <img src="@game.CoverUrl" class="cover" />
+
+                <h3>@game.Title</h3>
+                <p>@game.Genre</p>
+
+                <button class="details-btn" @onclick="() => GoToDetails(game.GameId)">
+                    Détails
+                </button>
+
+                <button class="remove-btn" @onclick="() => RemoveFromLibrary(game.GameId)">
+                    Retirer
+                </button>
+            </div>
+        }
+    </div>
+}

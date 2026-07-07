@@ -1,4 +1,4 @@
-﻿using GameVerse.API.DTOs.UserGame;
+﻿using GameVerse.SHARED.DTOs.UserGame;
 using GameVerse.API.Models;
 
 namespace GameVerse.API.Services.Interfaces

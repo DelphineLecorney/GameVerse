@@ -1,6 +1,7 @@
-﻿using GameVerse.API.DTOs.Games;
+﻿
+using GameVerse.SHARED.DTOs.Games;
 
-namespace GameVerse.API.DTOs.UserGame
+namespace GameVerse.SHARED.DTOs.UserGame
 {
     public class UserGameDto
     {

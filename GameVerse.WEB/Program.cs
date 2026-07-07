@@ -18,6 +18,8 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthState>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<IGameService, GameService>();
+
 
 
 await builder.Build().RunAsync();

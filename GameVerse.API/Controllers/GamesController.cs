@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using GameVerse.API.DTOs.Games;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
+using GameVerse.SHARED.DTOs.Games;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,8 +19,8 @@ namespace GameVerse.API.Controllers
 
 
         public GamesController(
-            IGameService gameService, 
-            IMapper mapper, IValidator<CreateGameDto> createValidator, 
+            IGameService gameService,
+            IMapper mapper, IValidator<CreateGameDto> createValidator,
             IValidator<UpdateGameDto> updateGameValidator)
         {
             _gameService = gameService;
@@ -60,8 +60,8 @@ namespace GameVerse.API.Controllers
                 return BadRequest(validation.ToDictionary());
 
             var created = await _gameService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetGame), 
-                new { id = created.GameId }, 
+            return CreatedAtAction(nameof(GetGame),
+                new { id = created.GameId },
                 _mapper.Map<GameDto>(created));
         }
 

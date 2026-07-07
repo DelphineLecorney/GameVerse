@@ -8,8 +8,10 @@
     <File Path="docs/images/Home.png" />
     <File Path="docs/images/Login.png" />
     <File Path="docs/images/migration-azure.png" />
+    <File Path="docs/images/Profile.png" />
     <File Path="docs/images/Register.png" />
   </Folder>
   <Project Path="GameVerse.API/GameVerse.API.csproj" />
+  <Project Path="GameVerse.Shared/GameVerse.SHARED.csproj" />
   <Project Path="GameVerse.WEB/GameVerse.WEB.csproj" />
 </Solution>

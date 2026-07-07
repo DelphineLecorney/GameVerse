@@ -1,4 +1,4 @@
-﻿namespace GameVerse.API.DTOs.Auth
+﻿namespace GameVerse.SHARED.DTOs.Auth
 {
     public class RefreshRequestDto
     {

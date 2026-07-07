@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using GameVerse.API.DTOs.UserGame;
-using GameVerse.API.Services;
 using GameVerse.API.Services.Interfaces;
+using GameVerse.SHARED.DTOs.UserGame;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,7 +41,7 @@ namespace GameVerse.API.Controllers
 
             var userGame = await _userGameService.AddAsync(userGameDto);
 
-            return CreatedAtAction(nameof(GetUserGames), 
+            return CreatedAtAction(nameof(GetUserGames),
                 new { userId = userGame.UserId },
                 _mapper.Map<UserGameDto>(userGame));
         }
@@ -81,8 +80,8 @@ namespace GameVerse.API.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> RemoveUserGame(int userId, int gameId)
         {
-            var deleted = await _userGameService.RemoveAsync(userId,gameId);
-            if(!deleted)
+            var deleted = await _userGameService.RemoveAsync(userId, gameId);
+            if (!deleted)
             {
                 return NotFound();
             }

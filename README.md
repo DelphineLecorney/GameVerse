@@ -14,6 +14,7 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
     <tr>
       <th align="center" width="50%">Inscription</th>
       <th align="center" width="50%">Connexion</th>
+     
     </tr>
   </thead>
   <tbody>
@@ -22,10 +23,16 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
       <td align="center"><img src="docs/images/Login.png" width="200"></td>
     </tr>
     <tr>
-      <th colspan="2" align="center">Accueil</th>
+      <th colspan="2" align="center">Accueil</th> 
     </tr>
     <tr>
       <td colspan="2" align="center"><img src="docs/images/Home.png" width="500"></td>
+    </tr>
+    <tr>
+      <th align="center" width="50%">Profil</th>
+    </tr>
+        <tr>
+      <td colspan="2" align="center"><img src="docs/images/Profile.png" width="500"></td>
     </tr>
   </tbody>
 </table>

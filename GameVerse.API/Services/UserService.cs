@@ -1,8 +1,7 @@
 ﻿using GameVerse.API.Data;
-using GameVerse.API.DTOs.Users;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
-using System.Data;
+using GameVerse.SHARED.DTOs.Users;
 
 namespace GameVerse.API.Services
 {
