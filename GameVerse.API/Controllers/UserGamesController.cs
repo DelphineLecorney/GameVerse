@@ -47,7 +47,7 @@ namespace GameVerse.API.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetUserGames(int userId)
+        public async Task<IActionResult> GetUserGames(string userId)
         {
             var list = await _userGameService.GetByUserAsync(userId);
             return Ok(_mapper.Map<IEnumerable<UserGameDto>>(list));
@@ -55,14 +55,14 @@ namespace GameVerse.API.Controllers
 
         [HttpGet("user/{userId}/favorites")]
         [ProducesResponseType(typeof(IEnumerable<UserGameDto>), 200)]
-        public async Task<IActionResult> GetFavorites(int userId)
+        public async Task<IActionResult> GetFavorites(string userId)
         {
             var list = await _userGameService.GetFavoritesAsync(userId);
             return Ok(_mapper.Map<IEnumerable<UserGameDto>>(list));
         }
 
         [HttpPut("{userId}/{gameId}")]
-        public async Task<IActionResult> UpdateRelation(int userId, int gameId, UpdateUserGameDto updateUserGameDto)
+        public async Task<IActionResult> UpdateRelation(string userId, int gameId, UpdateUserGameDto updateUserGameDto)
         {
             var validation = await _updateValidator.ValidateAsync(updateUserGameDto);
             if (!validation.IsValid)
@@ -78,7 +78,7 @@ namespace GameVerse.API.Controllers
         [HttpDelete("{userId}/{gameId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> RemoveUserGame(int userId, int gameId)
+        public async Task<IActionResult> RemoveUserGame(string userId, int gameId)
         {
             var deleted = await _userGameService.RemoveAsync(userId, gameId);
             if (!deleted)

@@ -5,7 +5,7 @@ namespace GameVerse.SHARED.DTOs.UserGame
 {
     public class UserGameDto
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int GameId { get; set; }
         public string RelationType { get; set; } = "Wishlist";
         public DateTime AddedAt { get; set; }

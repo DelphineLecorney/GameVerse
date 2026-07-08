@@ -51,25 +51,16 @@ namespace GameVerse.API.Controllers
         [HttpGet("me")]
         public async Task<IActionResult> Me()
         {
-            var userIdStr = User.FindFirst("sub")?.Value;
+            var userId = User.FindFirst("sub")?.Value;
 
-            if (string.IsNullOrEmpty(userIdStr))
-            {
+            if (string.IsNullOrEmpty(userId))
                 return Unauthorized(new { message = "Jeton d'authentification mal formé (sub manquant)." });
-            }
-
-            if (!int.TryParse(userIdStr, out int userId))
-            {
-                return BadRequest(new { message = "Le format de l'ID utilisateur est incorrect." });
-            }
 
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.UserId == userId);
 
             if (user == null)
-            {
                 return NotFound(new { message = $"L'utilisateur avec l'ID {userId} n'existe pas en base." });
-            }
 
             return Ok(new
             {
@@ -92,6 +83,7 @@ namespace GameVerse.API.Controllers
             return Ok(result);
         }
 
+
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequest request)
         {
@@ -107,9 +99,9 @@ namespace GameVerse.API.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-            var userIdStr = User.FindFirst("sub")?.Value;
+            var userId = User.FindFirst("sub")?.Value;
 
-            if (!int.TryParse(userIdStr, out int userId))
+            if (string.IsNullOrEmpty(userId))
                 return Unauthorized(new { message = "Utilisateur non reconnu" });
 
             await _authService.LogoutAsync(userId);

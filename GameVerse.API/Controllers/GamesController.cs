@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using GameVerse.API.Extensions;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
 using GameVerse.SHARED.DTOs.Games;
@@ -91,6 +92,37 @@ namespace GameVerse.API.Controllers
         {
             var deleted = await _gameService.DeleteAsync(id);
             if (!deleted)
+                return NotFound();
+
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpGet("library")]
+        public async Task<ActionResult<IEnumerable<GameDto>>> GetUserLibrary()
+        {
+            var userId = User.GetUserId();
+
+            if (userId == null)
+                return BadRequest("User not authenticated.");
+
+            var games = await _gameService.GetUserLibraryAsync(userId);
+
+            return Ok(_mapper.Map<IEnumerable<GameDto>>(games));
+        }
+
+        [Authorize]
+        [HttpDelete("library/{gameId}")]
+        public async Task<IActionResult> RemoveFromLibrary(int gameId)
+        {
+            var userId = User.GetUserId();
+
+            if (userId == null)
+                return BadRequest("User not authenticated.");
+
+            var removed = await _gameService.RemoveFromLibraryAsync(userId, gameId);
+
+            if (!removed)
                 return NotFound();
 
             return NoContent();

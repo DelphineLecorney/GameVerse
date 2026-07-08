@@ -30,10 +30,9 @@ namespace GameVerse.API.Services
             await _context.SaveChangesAsync();
 
             return userGame;
-
         }
 
-        public async Task<IEnumerable<UserGame>> GetByUserAsync(int userId)
+        public async Task<IEnumerable<UserGame>> GetByUserAsync(string userId)
         {
             return await _context.UserGames
                 .Include(ug => ug.Game)
@@ -41,7 +40,7 @@ namespace GameVerse.API.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<UserGame>> GetFavoritesAsync(int userId)
+        public async Task<IEnumerable<UserGame>> GetFavoritesAsync(string userId)
         {
             return await _context.UserGames
                 .Include(ug => ug.Game)
@@ -49,30 +48,26 @@ namespace GameVerse.API.Services
                 .ToListAsync();
         }
 
-        public async Task<bool> RemoveAsync(int userId, int gameId)
+        public async Task<bool> RemoveAsync(string userId, int gameId)
         {
             var userGame = await _context.UserGames
                 .FirstOrDefaultAsync(ug => ug.UserId == userId && ug.GameId == gameId);
 
             if (userGame == null)
-            {
                 return false;
-            }
 
             _context.UserGames.Remove(userGame);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<UserGame?> UpdateAsync(int userId, int gameId, UpdateUserGameDto dto)
+        public async Task<UserGame?> UpdateAsync(string userId, int gameId, UpdateUserGameDto dto)
         {
             var userGame = await _context.UserGames
                 .FirstOrDefaultAsync(ug => ug.UserId == userId && ug.GameId == gameId);
 
             if (userGame == null)
-            {
                 return null;
-            }
 
             userGame.RelationType = dto.RelationType;
             userGame.Rating = dto.Rating;

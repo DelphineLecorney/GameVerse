@@ -1,16 +1,14 @@
-﻿using GameVerse.SHARED.DTOs.UserGame;
-using GameVerse.API.Models;
+﻿using GameVerse.API.Models;
+using GameVerse.SHARED.DTOs.UserGame;
 
 namespace GameVerse.API.Services.Interfaces
 {
     public interface IUserGameService
     {
         Task<UserGame> AddAsync(AddUserGameDto dto);
-        Task<IEnumerable<UserGame>> GetByUserAsync(int userId);
-        Task<IEnumerable<UserGame>> GetFavoritesAsync(int userId);
-        Task<UserGame?> UpdateAsync(int userId, int gameId, UpdateUserGameDto dto);
-        Task<bool> RemoveAsync(int userId, int gameId);
+        Task<IEnumerable<UserGame>> GetByUserAsync(string userId);
+        Task<IEnumerable<UserGame>> GetFavoritesAsync(string userId);
+        Task<UserGame?> UpdateAsync(string userId, int gameId, UpdateUserGameDto dto);
+        Task<bool> RemoveAsync(string userId, int gameId);
     }
-
-
 }

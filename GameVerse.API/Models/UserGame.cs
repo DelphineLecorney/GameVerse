@@ -2,7 +2,7 @@
 {
     public class UserGame
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
         public int GameId { get; set; }
         public string RelationType { get; set; } = "Wishlist";
         public DateTime AddedAt { get; set; } = DateTime.Now;

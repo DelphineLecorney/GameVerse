@@ -8,7 +8,8 @@ namespace GameVerse.API.Validators.UserGames
         public AddUserGameDtoValidator()
         {
             RuleFor(x => x.UserId)
-                .GreaterThan(0).WithMessage("L'utilisateur est invalide.");
+                .NotEmpty()
+                .WithMessage("UserId is required.");
 
             RuleFor(x => x.GameId)
                 .GreaterThan(0).WithMessage("Le jeu est invalide.");

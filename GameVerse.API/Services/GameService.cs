@@ -72,5 +72,26 @@ namespace GameVerse.API.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<Game>> GetUserLibraryAsync(string userId)
+        {
+            return await _context.UserGames
+                .Where(ug => ug.UserId == userId)
+                .Select(ug => ug.Game!)
+                .ToListAsync();
+        }
+
+        public async Task<bool> RemoveFromLibraryAsync(string userId, int gameId)
+        {
+            var entry = await _context.UserGames
+                .FirstOrDefaultAsync(ug => ug.UserId == userId && ug.GameId == gameId);
+
+            if (entry == null)
+                return false;
+
+            _context.UserGames.Remove(entry);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

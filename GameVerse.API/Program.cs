@@ -32,6 +32,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IUserGameService, UserGameService>();
 
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowGameVerse",
@@ -69,6 +71,11 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<GameVerseContext>();
+    DataSeeder.Seed(context);
+}
 
 app.UseHttpsRedirection();
 

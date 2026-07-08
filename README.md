@@ -296,9 +296,12 @@ GameVerse.WEB/
 
 ## 🔐 Authentification Web
 
-L’application GameVerse.WEB utilise une authentification basée sur **JWT** fournie par l’API GameVerse.
+L’application **GameVerse.WEB** utilise une authentification basée sur **JWT**, fournie par l’API **GameVerse.API**.  
+Lorsqu’un utilisateur se connecte, un jeton JWT est stocké côté client et utilisé pour toutes les requêtes protégées.
 
-Une fois connecté, l’utilisateur accède à son espace personnel :
+### 🎮 Espace utilisateur
+
+Une fois authentifié, l’utilisateur accède à son espace personnel :
 
 - Profil
 - Bibliothèque de jeux
@@ -307,11 +310,22 @@ Une fois connecté, l’utilisateur accède à son espace personnel :
 
 La navigation s’adapte automatiquement à l’état de connexion :
 
-- **Non connecté** : Home, Register, Login  
-- **Connecté** : Home, Profil, Bibliothèque, Wishlist, Favoris, Logout  
+#### 🔓 Utilisateur non connecté
+- Home  
+- Register  
+- Login  
+
+#### 🔒 Utilisateur connecté
+- Home  
+- Profil  
+- Bibliothèque  
+- Wishlist  
+- Favoris  
+- Logout  
+
+### 🛡 Protection des pages
 
 Les pages sensibles sont protégées via l’attribut Razor :
 
 ```razor
 @attribute [Authorize]
-```
