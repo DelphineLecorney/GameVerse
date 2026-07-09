@@ -19,7 +19,7 @@ namespace GameVerse.API.Data
                         Description = "RPG futuriste dans Night City.",
                         Genre = "RPG",
                         ReleaseDate = new DateTime(2020, 12, 10),
-                        CoverUrl = "https://cdn.example.com/cyberpunk.jpg",
+                        CoverUrl = "images/Cyberpunk.png",
                         Developer = "CD Projekt Red",
                         Publisher = "CD Projekt"
                     },
@@ -29,7 +29,7 @@ namespace GameVerse.API.Data
                         Description = "Action RPG dans un monde ouvert sombre.",
                         Genre = "Action RPG",
                         ReleaseDate = new DateTime(2022, 2, 25),
-                        CoverUrl = "https://cdn.example.com/eldenring.jpg",
+                        CoverUrl = "images/EldenRing.png",
                         Developer = "FromSoftware",
                         Publisher = "Bandai Namco"
                     },
@@ -39,7 +39,7 @@ namespace GameVerse.API.Data
                         Description = "Sandbox créatif et survie.",
                         Genre = "Sandbox",
                         ReleaseDate = new DateTime(2011, 11, 18),
-                        CoverUrl = "https://cdn.example.com/minecraft.jpg",
+                        CoverUrl = "images/Minecraft.png",
                         Developer = "Mojang",
                         Publisher = "Mojang"
                     },
@@ -49,7 +49,7 @@ namespace GameVerse.API.Data
                         Description = "RPG narratif dans un monde ouvert.",
                         Genre = "RPG",
                         ReleaseDate = new DateTime(2015, 5, 19),
-                        CoverUrl = "https://cdn.example.com/witcher3.jpg",
+                        CoverUrl = "images/TheWitcher3.png",
                         Developer = "CD Projekt Red",
                         Publisher = "CD Projekt"
                     },
@@ -59,7 +59,7 @@ namespace GameVerse.API.Data
                         Description = "Rogue-like dynamique dans l'univers grec.",
                         Genre = "Rogue-like",
                         ReleaseDate = new DateTime(2020, 9, 17),
-                        CoverUrl = "https://cdn.example.com/hades.jpg",
+                        CoverUrl = "images/Hades.png",
                         Developer = "Supergiant Games",
                         Publisher = "Supergiant Games"
                     },
@@ -69,7 +69,7 @@ namespace GameVerse.API.Data
                         Description = "Simulation agricole relaxante.",
                         Genre = "Simulation",
                         ReleaseDate = new DateTime(2016, 2, 26),
-                        CoverUrl = "https://cdn.example.com/stardew.jpg",
+                        CoverUrl = "images/Stardew.png",
                         Developer = "ConcernedApe",
                         Publisher = "ConcernedApe"
                     },
@@ -79,7 +79,7 @@ namespace GameVerse.API.Data
                         Description = "FPS compétitif tactique.",
                         Genre = "FPS",
                         ReleaseDate = new DateTime(2020, 6, 2),
-                        CoverUrl = "https://cdn.example.com/valorant.jpg",
+                        CoverUrl = "images/Valorant.png",
                         Developer = "Riot Games",
                         Publisher = "Riot Games"
                     },
@@ -89,7 +89,7 @@ namespace GameVerse.API.Data
                         Description = "RPG tactique basé sur Donjons & Dragons.",
                         Genre = "RPG",
                         ReleaseDate = new DateTime(2023, 8, 3),
-                        CoverUrl = "https://cdn.example.com/bg3.jpg",
+                        CoverUrl = "images/BaldurGate3.png",
                         Developer = "Larian Studios",
                         Publisher = "Larian Studios"
                     },
@@ -99,7 +99,7 @@ namespace GameVerse.API.Data
                         Description = "Action dans un monde ouvert.",
                         Genre = "Action",
                         ReleaseDate = new DateTime(2013, 9, 17),
-                        CoverUrl = "https://cdn.example.com/gtav.jpg",
+                        CoverUrl = "images/GtaV.png",
                         Developer = "Rockstar North",
                         Publisher = "Rockstar Games"
                     },
@@ -109,7 +109,7 @@ namespace GameVerse.API.Data
                         Description = "MOBA compétitif.",
                         Genre = "MOBA",
                         ReleaseDate = new DateTime(2009, 10, 27),
-                        CoverUrl = "https://cdn.example.com/lol.jpg",
+                        CoverUrl = "images/Lol.png",
                         Developer = "Riot Games",
                         Publisher = "Riot Games"
                     }
