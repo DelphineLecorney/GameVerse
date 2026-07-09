@@ -37,7 +37,7 @@ public class AuthService
             if (authResponse == null)
                 return null;
 
-            _authState.SetAuth(authResponse.Token, authResponse.Username);
+            await _authState.SetAuthAsync(authResponse.Token, authResponse.Username);
 
             return authResponse.Token;
         }
@@ -52,9 +52,6 @@ public class AuthService
         if (!_authState.IsAuthenticated)
             return null;
 
-        _http.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", _authState.Token);
-
         var response = await _http.GetAsync("api/auth/me");
 
         if (!response.IsSuccessStatusCode)
@@ -64,9 +61,9 @@ public class AuthService
     }
 
 
-    public void Logout()
+    public async Task LogoutAsync()
     {
-        _authState.Logout();
+        await _authState.LogoutAsync();
     }
 
 }

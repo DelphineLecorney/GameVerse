@@ -3,15 +3,15 @@
 @page "/library"
 @attribute [Authorize]
 
-<h2>Ma bibliothèque</h2>
+<h2 class="page-title">Ma bibliothèque</h2>
 
 @if (Games == null)
 {
-    <p>Chargement...</p>
+    <p class="loading">Chargement...</p>
 }
 else if (!Games.Any())
 {
-    <p>Tu n’as encore aucun jeu dans ta bibliothèque.</p>
+    <p class="empty">Tu n’as encore aucun jeu dans ta bibliothèque.</p>
 }
 else
 {
@@ -21,16 +21,20 @@ else
             <div class="game-card">
                 <img src="@game.CoverUrl" class="cover" />
 
-                <h3>@game.Title</h3>
-                <p>@game.Genre</p>
+                <div class="info">
+                    <h3>@game.Title</h3>
+                    <p class="genre">@game.Genre</p>
+                </div>
 
-                <button class="details-btn" @onclick="() => GoToDetails(game.GameId)">
-                    Détails
-                </button>
+                <div class="actions">
+                    <button class="details-btn" @onclick="() => GoToDetails(game.GameId)">
+                        Voir détails
+                    </button>
 
-                <button class="remove-btn" @onclick="() => RemoveFromLibrary(game.GameId)">
-                    Retirer
-                </button>
+                    <button class="remove-btn" @onclick="() => RemoveFromLibrary(game.GameId)">
+                        Retirer
+                    </button>
+                </div>
             </div>
         }
     </div>

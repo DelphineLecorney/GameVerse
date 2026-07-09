@@ -8,6 +8,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddSingleton<AuthState>();
 builder.Services.AddScoped<AuthHeaderHandler>();
 
 builder.Services.AddHttpClient("GameVerse.API", client =>
@@ -19,7 +20,7 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
 
 builder.Services.AddAuthorizationCore();
 
-builder.Services.AddScoped<AuthState>();
+
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IGameService, GameService>();

@@ -9,9 +9,9 @@ public partial class MainLayout : LayoutComponentBase, IDisposable
     [Inject] private AuthService AuthService { get; set; } = default!;
     [Inject] private NavigationManager Nav { get; set; } = default!;
 
-    private void LogoutUser()
+    private async Task LogoutUser()
     {
-        AuthService.Logout();
+        await AuthService.LogoutAsync();
         Nav.NavigateTo("/login");
     }
 

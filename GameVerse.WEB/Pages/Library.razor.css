@@ -1,0 +1,88 @@
+﻿.page-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.loading,
+.empty {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.game-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform .2s ease, box-shadow .2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+    .game-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+
+.cover {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+}
+
+.info {
+    padding: 0.8rem 1rem;
+}
+
+    .info h3 {
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+.genre {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 1rem 1rem;
+}
+
+.details-btn,
+.remove-btn {
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.details-btn {
+    background: #3a82f7;
+    color: white;
+}
+
+    .details-btn:hover {
+        background: #1f6ae0;
+        transform: translateY(-2px);
+    }
+
+.remove-btn {
+    background: #d9534f;
+    color: white;
+}
+
+    .remove-btn:hover {
+        background: #c9302c;
+        transform: translateY(-2px);
+    }
