@@ -13,8 +13,7 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
   <thead>
     <tr>
       <th align="center" width="50%">Inscription</th>
-      <th align="center" width="50%">Connexion</th>
-     
+      <th align="center" width="50%">Connexion</th>     
     </tr>
   </thead>
   <tbody>
