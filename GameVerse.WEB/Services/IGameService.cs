@@ -6,6 +6,8 @@ namespace GameVerse.WEB.Services
     {
         Task<List<GameDto>> GetUserLibraryAsync();
         Task RemoveFromLibraryAsync(int gameId);
+        Task<GameDto?> GetByIdAsync(int id);
+
     }
 
 }

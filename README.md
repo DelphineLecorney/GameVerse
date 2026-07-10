@@ -23,16 +23,20 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
       <td align="center"><img src="docs/images/Login.png" width="200"></td>
     </tr>
     <tr>
-      <th colspan="2" align="center">Accueil</th> 
-    </tr>
-    <tr>
-      <td colspan="2" align="center"><img src="docs/images/Home.png" width="500"></td>
-    </tr>
-    <tr>
+      <th align="center">Accueil</th> 
       <th align="center" width="50%">Profil</th>
     </tr>
-        <tr>
-      <td colspan="2" align="center"><img src="docs/images/Profile.png" width="500"></td>
+    <tr>
+      <td align="center"><img src="docs/images/Home.png" width="500"></td>
+      <td align="center"><img src="docs/images/Profile.png" width="500"></td>
+    </tr>
+    <tr>
+      <th align="center" width="50%">Librairy</th>
+      <th align="center" width="50%">Details</th>
+    </tr>
+    <tr>
+      <td align="center"><img src="docs/images/Librairy.png" width="500"></td>
+      <td align="center"><img src="docs/images/Details.png" width="500"></td>
     </tr>
   </tbody>
 </table>
@@ -272,6 +276,7 @@ docker run -p 8080:80 gameverse-api
 GameVerse.WEB/
 │
 ├── Pages/
+│   ├── GameDetails.razor
 │   ├── Home.razor
 │   ├── Login.razor
 │   ├── Register.razor
@@ -329,3 +334,13 @@ Les pages sensibles sont protégées via l’attribut Razor :
 
 ```razor
 @attribute [Authorize]
+```
+
+### 🐛 Stabilisation de l'authentification (WASM)
+
+Plusieurs bugs classiques de Blazor WebAssembly ont été résolus :
+
+- **Token non attaché aux requêtes** → ajout d'un `DelegatingHandler` (`AuthHeaderHandler`) injectant automatiquement le header `Authorization` via `IHttpClientFactory`.
+- **401/400 intermittents** → incohérence entre le claim `"sub"` du JWT et `ClaimTypes.NameIdentifier` utilisé côté API. Centralisé via une extension `ClaimsPrincipalExtensions.GetUserId()`.
+- **Perte de session au refresh** → `AuthState` persiste désormais le token en `localStorage` (via `IJSRuntime`), restauré au démarrage avant tout rendu (`App.razor`).
+- **Comportement incohérent selon la page visitée** → `AuthState` passé en `Singleton` pour garantir une instance unique partagée par le pipeline `IHttpClientFactory` (cohérent avec une SPA à session unique).

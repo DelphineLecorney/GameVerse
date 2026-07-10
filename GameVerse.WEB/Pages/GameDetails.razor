@@ -1,0 +1,37 @@
+﻿@page "/game/{GameId:int}"
+
+<h2 class="title">@Game?.Title</h2>
+
+@if (Game == null)
+{
+    <p class="loading">Chargement...</p>
+}
+else
+{
+    <div class="details-container">
+        <img src="@Game.CoverUrl" class="cover-large" />
+
+        <div class="info-panel">
+            <h3>Description</h3>
+            <p>@(string.IsNullOrWhiteSpace(Game.Description) ? "Aucune description disponible." : Game.Description)</p>
+
+            <div class="meta">
+                <span class="meta-label">Genre</span>
+                <span class="meta-value">@Game.Genre</span>
+
+                <span class="meta-label">Date de sortie</span>
+                <span class="meta-value">@(Game.ReleaseDate?.ToString("dd MMM yyyy") ?? "—")</span>
+
+                <span class="meta-label">Développeur</span>
+                <span class="meta-value">@(string.IsNullOrWhiteSpace(Game.Developer) ? "—" : Game.Developer)</span>
+
+                <span class="meta-label">Éditeur</span>
+                <span class="meta-value">@(string.IsNullOrWhiteSpace(Game.Publisher) ? "—" : Game.Publisher)</span>
+            </div>
+
+            <button class="back-btn" @onclick="GoBack">
+                Retour à la bibliothèque
+            </button>
+        </div>
+    </div>
+}

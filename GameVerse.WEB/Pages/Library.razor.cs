@@ -10,7 +10,7 @@ namespace GameVerse.WEB.Pages
     {
         [Inject] public IGameService GameService { get; set; } = default!;
         [Inject] public NavigationManager Navigation { get; set; } = default!;
-        [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; }
+        [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
 
         private List<GameDto> Games = new();
 
