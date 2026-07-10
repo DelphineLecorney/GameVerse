@@ -34,10 +34,10 @@ public class AuthService
 
             var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
 
-            if (authResponse == null)
+            if (authResponse == null || string.IsNullOrEmpty(authResponse.RefreshToken))
                 return null;
 
-            await _authState.SetAuthAsync(authResponse.Token, authResponse.Username);
+            await _authState.SetAuthAsync(authResponse.Token, authResponse.RefreshToken, authResponse.Username);
 
             return authResponse.Token;
         }

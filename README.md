@@ -341,5 +341,8 @@ Plusieurs bugs classiques de Blazor WebAssembly ont été résolus :
 
 - **Token non attaché aux requêtes** → ajout d'un `DelegatingHandler` (`AuthHeaderHandler`) injectant automatiquement le header `Authorization` via `IHttpClientFactory`.
 - **401/400 intermittents** → incohérence entre le claim `"sub"` du JWT et `ClaimTypes.NameIdentifier` utilisé côté API. Centralisé via une extension `ClaimsPrincipalExtensions.GetUserId()`.
-- **Perte de session au refresh** → `AuthState` persiste désormais le token en `localStorage` (via `IJSRuntime`), restauré au démarrage avant tout rendu (`App.razor`).
-- **Comportement incohérent selon la page visitée** → `AuthState` passé en `Singleton` pour garantir une instance unique partagée par le pipeline `IHttpClientFactory` (cohérent avec une SPA à session unique).
+- **Perte de session au refresh de page** → `AuthState` persiste le token en `localStorage` (via `IJSRuntime`), restauré au démarrage avant tout rendu (`App.razor`).
+- **Comportement incohérent selon la page visitée** → `AuthState` passé en `Singleton` pour garantir une instance unique partagée par le pipeline `IHttpClientFactory`.
+- **Refresh token automatique** → à l'expiration du JWT (401), `AuthHeaderHandler` déclenche un refresh silencieux via `api/auth/refresh` et rejoue la requête originale avec le nouveau token. Si le refresh échoue (refresh token expiré/révoqué), l'utilisateur est déconnecté et redirigé vers `/login`. Un verrou (`SemaphoreSlim`) évite les refresh concurrents en cas de requêtes API simultanées.
+
+> ⚠️ **Limite connue** : le refresh token est stocké en `localStorage`, donc potentiellement exposé en cas de faille XSS. Une évolution possible serait de le déplacer en cookie `HttpOnly` posé directement par l'API (nécessite une refonte CORS/cookies).

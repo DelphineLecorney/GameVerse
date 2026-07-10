@@ -11,15 +11,20 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddSingleton<AuthState>();
 builder.Services.AddScoped<AuthHeaderHandler>();
 
+// Client principal, avec le handler qui attache le token et gère le refresh
 builder.Services.AddHttpClient("GameVerse.API", client =>
         client.BaseAddress = new Uri("https://localhost:7046/"))
     .AddHttpMessageHandler<AuthHeaderHandler>();
+
+// Client "brut", sans handler, utilisé uniquement pour l'appel de refresh
+// (évite la boucle infinie si le refresh renvoie lui-même un 401)
+builder.Services.AddHttpClient("GameVerse.API.Raw", client =>
+    client.BaseAddress = new Uri("https://localhost:7046/"));
 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
     .CreateClient("GameVerse.API"));
 
 builder.Services.AddAuthorizationCore();
-
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<AuthService>();

@@ -20,14 +20,7 @@ namespace GameVerse.WEB.Pages
 
             if (authState.User.Identity?.IsAuthenticated == true)
             {
-                try
-                {
-                    Games = await GameService.GetUserLibraryAsync();
-                }
-                catch (HttpRequestException)
-                {
-                    Navigation.NavigateTo("/login");
-                }
+                Games = await GameService.GetUserLibraryAsync();
             }
             else
             {
