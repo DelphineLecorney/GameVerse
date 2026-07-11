@@ -32,8 +32,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IUserGameService, UserGameService>();
 
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowGameVerse",
@@ -41,8 +39,7 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("https://localhost:7144")
                   .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
+                  .AllowAnyMethod();
         });
 });
 

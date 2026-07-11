@@ -12,7 +12,13 @@ else
     <div class="app-panel profile-wrapper">
 
         <div class="profile-header">
-            <img src="img/avatar-default.png" class="avatar" />
+            <div class="avatar">
+                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8" cy="8" r="8" fill="var(--app-bg-panel-light)" />
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" fill="var(--app-accent)" />
+                    <path d="M8 9c-2.67 0-8 1.34-8 4v1a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1c0-2.66-5.33-4-8-4z" fill="var(--app-text-on-dark)" opacity="0.9" />
+                </svg>
+            </div>
             <h2>@User.Username</h2>
             <span class="email">@User.Email</span>
         </div>

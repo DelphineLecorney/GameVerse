@@ -8,18 +8,20 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+var apiBaseUrl = builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7046/";
+
 builder.Services.AddSingleton<AuthState>();
 builder.Services.AddScoped<AuthHeaderHandler>();
 
 // Client principal, avec le handler qui attache le token et gère le refresh
 builder.Services.AddHttpClient("GameVerse.API", client =>
-        client.BaseAddress = new Uri("https://localhost:7046/"))
+        client.BaseAddress = new Uri(apiBaseUrl))
     .AddHttpMessageHandler<AuthHeaderHandler>();
 
 // Client "brut", sans handler, utilisé uniquement pour l'appel de refresh
 // (évite la boucle infinie si le refresh renvoie lui-même un 401)
 builder.Services.AddHttpClient("GameVerse.API.Raw", client =>
-    client.BaseAddress = new Uri("https://localhost:7046/"));
+    client.BaseAddress = new Uri(apiBaseUrl));
 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
     .CreateClient("GameVerse.API"));

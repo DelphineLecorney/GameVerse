@@ -21,6 +21,37 @@ body {
 }
 
 /* ==========================================
+   BANDEAU D'ERREUR BLAZOR (géré par le framework)
+   ========================================== */
+#blazor-error-ui {
+    background: var(--app-danger);
+    color: #ffffff;
+    bottom: 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.4);
+    display: none;
+    left: 0;
+    padding: 0.8rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    font-weight: 500;
+}
+
+    #blazor-error-ui .reload {
+        color: #ffffff;
+        text-decoration: underline;
+        font-weight: 700;
+    }
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 1rem;
+        top: 0.7rem;
+        font-weight: 700;
+    }
+
+/* ==========================================
    PANNEAUX / CONTENEURS (cards, formulaires)
    Usage : <div class="app-panel">
    ========================================== */
