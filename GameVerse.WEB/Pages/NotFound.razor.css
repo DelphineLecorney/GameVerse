@@ -1,0 +1,34 @@
+﻿.notfound-container {
+    max-width: 500px;
+    margin: 4rem auto;
+    text-align: center;
+    padding: 2rem;
+}
+
+.notfound-code {
+    font-size: 6rem;
+    font-weight: 800;
+    color: var(--app-accent);
+    text-shadow: 0 0 30px rgba(57, 255, 136, 0.4);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.notfound-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--app-text-on-dark);
+}
+
+.notfound-text {
+    color: var(--app-text-light);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.notfound-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}

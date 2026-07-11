@@ -11,7 +11,7 @@
 }
 else if (!Games.Any())
 {
-    <p class="empty">Tu n’as encore aucun jeu dans ta bibliothèque.</p>
+    <p>Tu n'as encore aucun jeu dans ta bibliothèque.</p>
 }
 else
 {
@@ -23,15 +23,15 @@ else
 
                 <div class="info">
                     <h3>@game.Title</h3>
-                    <p class="genre">@game.Genre</p>
+                    <span class="badge-app">@game.Genre</span>
                 </div>
 
                 <div class="actions">
-                    <button class="details-btn" @onclick="() => GoToDetails(game.GameId)">
-                        Voir détails
+                    <button class="btn-app btn-app-primary" @onclick="() => GoToDetails(game.GameId)">
+                        Détails
                     </button>
 
-                    <button class="remove-btn" @onclick="() => RemoveFromLibrary(game.GameId)">
+                    <button class="btn-app btn-app-danger" @onclick="() => RemoveFromLibrary(game.GameId)">
                         Retirer
                     </button>
                 </div>

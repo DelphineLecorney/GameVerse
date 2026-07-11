@@ -1,7 +1,7 @@
 ﻿@page "/login"
 @inherits LoginBase
 
-<div class="login-container">
+<div class="app-panel app-panel-form login-container">
     <h2>Connexion</h2>
 
     @if (!string.IsNullOrEmpty(ErrorMessage))
@@ -19,7 +19,7 @@
         <input type="password" class="form-control" @bind="Password" />
     </div>
 
-    <button class="btn btn-primary login-btn" @onclick="LoginUser">
+    <button class="btn-app btn-app-primary btn-app-block" @onclick="LoginUser">
         Se connecter
     </button>
 </div>

@@ -5,11 +5,11 @@
 
 @if (User == null)
 {
-    <div class="loading">Chargement du profil...</div>
+    <p class="loading">Chargement du profil...</p>
 }
 else
 {
-    <div class="profile-wrapper">
+    <div class="app-panel profile-wrapper">
 
         <div class="profile-header">
             <img src="img/avatar-default.png" class="avatar" />
@@ -20,7 +20,7 @@ else
         <div class="profile-grid">
 
             <div class="profile-card">
-                <h3>Date d’inscription</h3>
+                <h3>Date d'inscription</h3>
                 <p>@User.CreatedAt.ToShortDateString()</p>
             </div>
 
@@ -36,8 +36,8 @@ else
 
         </div>
 
-
-
-        <button class="edit-btn">Modifier le profil</button>
+        <button class="btn-app btn-app-primary btn-app-block">
+            Modifier le profil
+        </button>
     </div>
 }

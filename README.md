@@ -12,16 +12,6 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
 <table>
   <thead>
     <tr>
-      <th align="center" width="50%">Inscription</th>
-      <th align="center" width="50%">Connexion</th>     
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><img src="docs/images/Register.png" width="200"></td>
-      <td align="center"><img src="docs/images/Login.png" width="200"></td>
-    </tr>
-    <tr>
       <th align="center">Accueil</th> 
       <th align="center" width="50%">Profil</th>
     </tr>
@@ -36,6 +26,14 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
     <tr>
       <td align="center"><img src="docs/images/Librairy.png" width="500"></td>
       <td align="center"><img src="docs/images/Details.png" width="500"></td>
+    </tr>
+        <tr>
+      <th align="center" width="50%">Not Found</th>
+      <th align="center" width="50%"></th>
+    </tr>
+    <tr>
+      <td align="center"><img src="docs/images/NotFound.png" width="500"></td>
+      <td align="center"><img src="" width="500"></td>
     </tr>
   </tbody>
 </table>
@@ -324,8 +322,7 @@ La navigation s’adapte automatiquement à l’état de connexion :
 - Profil  
 - Bibliothèque  
 - Wishlist  
-- Favoris  
-- Logout  
+- Favoris
 
 ### 🛡 Protection des pages
 
