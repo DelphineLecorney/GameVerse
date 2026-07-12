@@ -1,6 +1,6 @@
 ﻿using GameVerse.SHARED.DTOs.Games;
 
-namespace GameVerse.WEB.Services
+namespace GameVerse.WEB.Services.Interfaces
 {
     public interface IGameService
     {

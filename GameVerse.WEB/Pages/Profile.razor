@@ -3,7 +3,11 @@
 @page "/profile"
 @attribute [Authorize]
 
-@if (User == null)
+@if (HasError)
+{
+    <p class="error-message">Impossible de contacter le serveur. Vérifier que l'API est démarrée, puis réessayer.</p>
+}
+else if (User == null)
 {
     <p class="loading">Chargement du profil...</p>
 }
@@ -24,22 +28,10 @@ else
         </div>
 
         <div class="profile-grid">
-
             <div class="profile-card">
                 <h3>Date d'inscription</h3>
                 <p>@User.CreatedAt.ToShortDateString()</p>
             </div>
-
-            @* <div class="profile-card">
-                <h3>Dernière connexion</h3>
-                <p>@User.LastLogin?.ToShortDateString()</p>
-            </div>
-
-            <div class="profile-card">
-                <h3>Rôle</h3>
-                <p>@User.Role</p>
-            </div> *@
-
         </div>
 
         <button class="btn-app btn-app-primary btn-app-block">

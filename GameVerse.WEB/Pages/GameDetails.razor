@@ -1,6 +1,10 @@
 ﻿@page "/game/{GameId:int}"
 
-@if (Game == null)
+@if (HasError)
+{
+    <p class="error-message">Impossible de contacter le serveur. Vérifier que l'API est démarrée, puis réessayer.</p>
+}
+else if (Game == null)
 {
     <div class="details-container">
         <div class="cover-skeleton"></div>

@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 
-@page "/library"
+@page "/favorites"
 @attribute [Authorize]
 
-<h2 class="page-title">Ma bibliothèque</h2>
+<h2 class="page-title">Mes favoris</h2>
 
 @if (HasError)
 {
@@ -15,7 +15,7 @@ else if (Games == null)
 }
 else if (!Games.Any())
 {
-    <p>Tu n'as encore aucun jeu dans ta bibliothèque.</p>
+    <p>Tu n'as pas encore de jeu en favori.</p>
 }
 else
 {
@@ -32,10 +32,10 @@ else
 
                 <div class="actions">
                     <button class="btn-app btn-app-primary" @onclick="() => GoToDetails(game.GameId)">
-                        Détails
+                        Voir détails
                     </button>
 
-                    <button class="btn-app btn-app-danger" @onclick="() => RemoveFromLibrary(game.GameId)">
+                    <button class="btn-app btn-app-danger" @onclick="() => RemoveFromFavorites(game.GameId)">
                         Retirer
                     </button>
                 </div>

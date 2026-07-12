@@ -1,4 +1,5 @@
 ﻿using GameVerse.SHARED.DTOs.Games;
+using GameVerse.WEB.Services.Interfaces;
 using System.Net.Http.Json;
 
 namespace GameVerse.WEB.Services

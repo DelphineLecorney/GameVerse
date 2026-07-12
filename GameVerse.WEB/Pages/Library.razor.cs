@@ -1,8 +1,8 @@
 ﻿using GameVerse.SHARED.DTOs.Games;
 using GameVerse.WEB.Services;
+using GameVerse.WEB.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Net;
 
 namespace GameVerse.WEB.Pages
 {
@@ -13,6 +13,7 @@ namespace GameVerse.WEB.Pages
         [Inject] private AuthenticationStateProvider AuthStateProvider { get; set; } = default!;
 
         private List<GameDto> Games = new();
+        private bool HasError;
 
         protected override async Task OnInitializedAsync()
         {
@@ -20,7 +21,14 @@ namespace GameVerse.WEB.Pages
 
             if (authState.User.Identity?.IsAuthenticated == true)
             {
-                Games = await GameService.GetUserLibraryAsync();
+                try
+                {
+                    Games = await GameService.GetUserLibraryAsync();
+                }
+                catch (Exception)
+                {
+                    HasError = true;
+                }
             }
             else
             {
@@ -30,8 +38,15 @@ namespace GameVerse.WEB.Pages
 
         private async Task RemoveFromLibrary(int gameId)
         {
-            await GameService.RemoveFromLibraryAsync(gameId);
-            Games = await GameService.GetUserLibraryAsync();
+            try
+            {
+                await GameService.RemoveFromLibraryAsync(gameId);
+                Games = await GameService.GetUserLibraryAsync();
+            }
+            catch (Exception)
+            {
+                HasError = true;
+            }
         }
 
         private void GoToDetails(int gameId)

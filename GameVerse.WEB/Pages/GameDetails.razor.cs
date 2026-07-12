@@ -1,5 +1,5 @@
 ﻿using GameVerse.SHARED.DTOs.Games;
-using GameVerse.WEB.Services;
+using GameVerse.WEB.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace GameVerse.WEB.Pages
@@ -12,10 +12,18 @@ namespace GameVerse.WEB.Pages
         [Inject] public NavigationManager Navigation { get; set; } = default!;
 
         public GameDto? Game { get; set; }
+        public bool HasError { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Game = await GameService.GetByIdAsync(GameId);
+            try
+            {
+                Game = await GameService.GetByIdAsync(GameId);
+            }
+            catch (Exception)
+            {
+                HasError = true;
+            }
         }
 
         public void GoBack()

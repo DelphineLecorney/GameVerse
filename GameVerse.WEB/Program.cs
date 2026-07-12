@@ -1,5 +1,6 @@
 using GameVerse.WEB;
 using GameVerse.WEB.Services;
+using GameVerse.WEB.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -31,5 +32,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IUserGameService, UserGameService>();
+
 
 await builder.Build().RunAsync();

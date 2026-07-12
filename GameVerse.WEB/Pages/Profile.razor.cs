@@ -11,6 +11,7 @@ public partial class Profile
     [Inject] public AuthenticationStateProvider AuthProvider { get; set; } = default!;
 
     public UserDto? User { get; set; }
+    public bool HasError { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -23,6 +24,14 @@ public partial class Profile
             return;
         }
 
-        User = await AuthService.GetCurrentUserAsync();
+        try
+        {
+            User = await AuthService.GetCurrentUserAsync();
+        }
+        catch (Exception)
+        {
+            User = null;
+            HasError = true;
+        }
     }
 }

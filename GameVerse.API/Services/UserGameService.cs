@@ -1,7 +1,7 @@
 ﻿using GameVerse.API.Data;
-using GameVerse.SHARED.DTOs.UserGame;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
+using GameVerse.SHARED.DTOs.UserGame;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameVerse.API.Services
@@ -40,14 +40,6 @@ namespace GameVerse.API.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<UserGame>> GetFavoritesAsync(string userId)
-        {
-            return await _context.UserGames
-                .Include(ug => ug.Game)
-                .Where(ug => ug.UserId == userId && ug.RelationType == "favorite")
-                .ToListAsync();
-        }
-
         public async Task<bool> RemoveAsync(string userId, int gameId)
         {
             var userGame = await _context.UserGames
@@ -75,5 +67,14 @@ namespace GameVerse.API.Services
             await _context.SaveChangesAsync();
             return userGame;
         }
+
+        public async Task<IEnumerable<UserGame>> GetByTypeAsync(string userId, string relationType)
+        {
+            return await _context.UserGames
+                .Include(ug => ug.Game)
+                .Where(ug => ug.UserId == userId && ug.RelationType == relationType)
+                .ToListAsync();
+        }
+
     }
 }
