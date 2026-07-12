@@ -7,7 +7,7 @@
 
 @if (HasError)
 {
-    <p class="error-message">Impossible de contacter le serveur. Vérifier que l'API est démarrée, puis réessayer.</p>
+    <p class="error-message">Impossible de contacter le serveur. Vérifie que l'API est démarrée, puis réessaie.</p>
 }
 else if (Games == null)
 {
@@ -35,7 +35,7 @@ else
                         Voir détails
                     </button>
 
-                    <button class="btn-app btn-app-danger" @onclick="() => RemoveFromWishlist(game.GameId)">
+                    <button class="btn-app btn-app-danger" @onclick="() => AskRemoveConfirmation(game.GameId, game.Title)">
                         Retirer
                     </button>
                 </div>
@@ -43,3 +43,10 @@ else
         }
     </div>
 }
+
+<ConfirmModal IsVisible="ShowConfirmModal"
+              Title="Retirer ce jeu ?"
+              Message="@ConfirmMessage"
+              ConfirmLabel="Retirer"
+              OnConfirm="ConfirmRemove"
+              OnCancel="CancelRemove" />

@@ -1,0 +1,63 @@
+﻿.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeInOverlay 0.15s ease;
+}
+
+.modal-box {
+    background: var(--app-bg-panel);
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+    padding: 1.8rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    animation: popIn 0.15s ease;
+}
+
+    .modal-box h3 {
+        margin-top: 0;
+        color: var(--app-text-on-dark);
+    }
+
+    .modal-box p {
+        color: var(--app-text-light);
+        margin-bottom: 1.5rem;
+    }
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+}
+
+    .modal-actions .btn-app {
+        padding: 0.6rem 1.1rem;
+    }
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

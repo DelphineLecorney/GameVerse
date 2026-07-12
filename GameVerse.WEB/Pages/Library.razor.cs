@@ -1,5 +1,4 @@
 ﻿using GameVerse.SHARED.DTOs.Games;
-using GameVerse.WEB.Services;
 using GameVerse.WEB.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -14,6 +13,10 @@ namespace GameVerse.WEB.Pages
 
         private List<GameDto> Games = new();
         private bool HasError;
+
+        private bool ShowConfirmModal;
+        private string ConfirmMessage = "";
+        private int _gameIdToRemove;
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,17 +39,31 @@ namespace GameVerse.WEB.Pages
             }
         }
 
-        private async Task RemoveFromLibrary(int gameId)
+        private void AskRemoveConfirmation(int gameId, string title)
         {
+            _gameIdToRemove = gameId;
+            ConfirmMessage = $"Es-tu sûre de vouloir retirer \"{title}\" de ta bibliothèque ?";
+            ShowConfirmModal = true;
+        }
+
+        private async Task ConfirmRemove()
+        {
+            ShowConfirmModal = false;
+
             try
             {
-                await GameService.RemoveFromLibraryAsync(gameId);
+                await GameService.RemoveFromLibraryAsync(_gameIdToRemove);
                 Games = await GameService.GetUserLibraryAsync();
             }
             catch (Exception)
             {
                 HasError = true;
             }
+        }
+
+        private void CancelRemove()
+        {
+            ShowConfirmModal = false;
         }
 
         private void GoToDetails(int gameId)

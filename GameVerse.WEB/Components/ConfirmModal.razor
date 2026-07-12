@@ -1,0 +1,18 @@
+﻿@if (IsVisible)
+{
+    <div class="modal-overlay" @onclick="Cancel">
+        <div class="modal-box" @onclick:stopPropagation="true">
+            <h3>@Title</h3>
+            <p>@Message</p>
+
+            <div class="modal-actions">
+                <button class="btn-app btn-app-secondary" @onclick="Cancel">
+                    Annuler
+                </button>
+                <button class="btn-app btn-app-danger" @onclick="Confirm">
+                    @ConfirmLabel
+                </button>
+            </div>
+        </div>
+    </div>
+}

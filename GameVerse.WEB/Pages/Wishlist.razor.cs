@@ -12,6 +12,10 @@ namespace GameVerse.WEB.Pages
         public List<GameDto>? Games { get; set; }
         public bool HasError { get; set; }
 
+        private bool ShowConfirmModal;
+        private string ConfirmMessage = "";
+        private int _gameIdToRemove;
+
         protected override async Task OnInitializedAsync()
         {
             try
@@ -29,17 +33,31 @@ namespace GameVerse.WEB.Pages
             Navigation.NavigateTo($"/game/{id}");
         }
 
-        private async Task RemoveFromWishlist(int id)
+        private void AskRemoveConfirmation(int gameId, string title)
         {
+            _gameIdToRemove = gameId;
+            ConfirmMessage = $"Es-tu sûre de vouloir retirer \"{title}\" de ta liste de souhaits ?";
+            ShowConfirmModal = true;
+        }
+
+        private async Task ConfirmRemove()
+        {
+            ShowConfirmModal = false;
+
             try
             {
-                await UserGameService.RemoveAsync(id);
+                await UserGameService.RemoveAsync(_gameIdToRemove);
                 Games = await UserGameService.GetWishlistAsync();
             }
             catch (Exception)
             {
                 HasError = true;
             }
+        }
+
+        private void CancelRemove()
+        {
+            ShowConfirmModal = false;
         }
     }
 }
