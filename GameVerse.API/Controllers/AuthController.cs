@@ -30,19 +30,10 @@ namespace GameVerse.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(AuthRegisterRequest request)
         {
-            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+            if (await _authService.EmailExists(request.Email))
                 return BadRequest("Email déjà utilisé");
 
-            var user = new User
-            {
-                Username = request.Username,
-                Email = request.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                CreatedAt = DateTime.UtcNow
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _authService.RegisterAsync(request);
 
             return Ok(new { message = "Utilisateur enregistré avec succès" });
         }
