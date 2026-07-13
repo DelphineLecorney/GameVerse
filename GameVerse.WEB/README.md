@@ -119,8 +119,24 @@ Plusieurs bugs classiques de Blazor WebAssembly ont été résolus :
       <th align="center" width="50%">Détails</th>
     </tr>
     <tr>
-      <td align="center"><img src="../docs/images/Librairy.png" width="450"></td>
+      <td align="center"><img src="../docs/images/Bibliotheque.png" width="450"></td>
       <td align="center"><img src="../docs/images/Details.png" width="450"></td>
+    </tr>
+    <tr>
+      <th align="center">Catalogue</th>
+      <th align="center" width="50%">Favoris</th>
+    </tr>
+    <tr>
+      <td align="center"><img src="../docs/images/Catalogue.png" width="450"></td>
+      <td align="center"><img src="../docs/images/Favoris.png" width="450"></td>
+    </tr>
+    <tr>
+      <th align="center">Souhaits</th>
+      <th align="center" width="50%"></th>
+    </tr>
+    <tr>
+      <td align="center"><img src="../docs/images/Souhaits.png" width="450"></td>
+      <td align="center"></td>
     </tr>
   </tbody>
 </table>
