@@ -42,6 +42,13 @@ namespace GameVerse.WEB.Services
             NotifyStateChanged();
         }
 
+        public async Task UpdateUsernameAsync(string username)
+        {
+            Username = username;
+            await _js.InvokeVoidAsync("localStorage.setItem", "username", username);
+            NotifyStateChanged();
+        }
+
         public async Task LogoutAsync()
         {
             Token = null;
@@ -54,5 +61,6 @@ namespace GameVerse.WEB.Services
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();
+
     }
 }

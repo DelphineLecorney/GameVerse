@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Authorization
+
+@page "/profile/edit"
+@attribute [Authorize]
+
+<div class="app-panel app-panel-form profile-edit-container">
+    <h2>Modifier mon profil</h2>
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="error-message">@ErrorMessage</div>
+    }
+
+    @if (!string.IsNullOrEmpty(SuccessMessage))
+    {
+        <div class="success-message">@SuccessMessage</div>
+    }
+
+    @if (IsLoading)
+    {
+        <p class="loading">Chargement...</p>
+    }
+    else
+    {
+        <div class="form-group">
+            <label>Nom d'utilisateur</label>
+            <input type="text" class="form-control" @bind="Username" />
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" @bind="Email" />
+        </div>
+
+        <div class="profile-edit-actions">
+            <button class="btn-app btn-app-secondary" @onclick="Cancel">
+                Annuler
+            </button>
+            <button class="btn-app btn-app-primary" @onclick="Save">
+                Enregistrer
+            </button>
+        </div>
+    }
+</div>

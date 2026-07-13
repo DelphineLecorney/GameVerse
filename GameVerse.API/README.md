@@ -53,11 +53,12 @@ Le projet utilise **Entity Framework Core** et une base **Azure SQL**.
 - Endpoints sensibles protégés
 
 ### ❤️ Relations User ↔ Game
-- Ajout d'un jeu à un utilisateur (wishlist, favoris, owned…)
+- Ajout d'un jeu à la bibliothèque ou à la liste de souhaits (`RelationType`: `Wishlist` ou `Library`)
+- **Statut favori indépendant** (`IsFavorite`) : un jeu peut être marqué favori qu'il soit dans la bibliothèque ou la wishlist — nécessite que le jeu soit déjà présent dans l'une des deux listes
 - Mise à jour de la relation (type, rating)
 - Suppression d'un jeu de la bibliothèque
-- Listing des jeux d'un utilisateur (dont favoris)
-- DTOs dédiés
+- Listing des jeux d'un utilisateur (bibliothèque, wishlist, favoris)
+- DTOs dédiés (`GameWithStatusDto` pour le catalogue avec statut utilisateur)
 
 ### 🔐 Sécurité & Secrets
 - **User Secrets Manager** activé

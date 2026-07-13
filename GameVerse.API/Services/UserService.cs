@@ -14,12 +14,12 @@ namespace GameVerse.API.Services
             _context = context;
         }
 
-        public async Task<User?> GetByIdAsync(int id)
+        public async Task<User?> GetByIdAsync(string id)
         {
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<User?> UpdateAsync(int id, UpdateUserDto dto)
+        public async Task<User?> UpdateAsync(string id, UpdateUserDto dto)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
@@ -32,8 +32,7 @@ namespace GameVerse.API.Services
             return user;
         }
 
-
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(string id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
@@ -44,7 +43,7 @@ namespace GameVerse.API.Services
             return true;
         }
 
-        public async Task<bool> UpdateRoleAsync(int userId, string role)
+        public async Task<bool> UpdateRoleAsync(string userId, string role)
         {
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
@@ -54,7 +53,5 @@ namespace GameVerse.API.Services
             await _context.SaveChangesAsync();
             return true;
         }
-
-
     }
 }

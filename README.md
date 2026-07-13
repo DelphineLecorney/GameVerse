@@ -46,7 +46,7 @@ Le projet est structuré en trois projets distincts :
   <tbody>
     <tr>
       <td align="center"><img src="docs/images/Home.png" width="450"></td>
-      <td align="center"><img src="docs/images/Librairy.png" width="450"></td>
+      <td align="center"><img src="docs/images/Bibliotheque.png" width="450"></td>
     </tr>
   </tbody>
 </table>

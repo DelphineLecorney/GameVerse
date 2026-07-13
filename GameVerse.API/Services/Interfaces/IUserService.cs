@@ -5,9 +5,9 @@ namespace GameVerse.API.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<User?> GetByIdAsync(int id);
-        Task<User?> UpdateAsync(int id, UpdateUserDto dto);
-        Task<bool> UpdateRoleAsync(int userId, string role);
-        Task<bool> DeleteAsync(int id);
+        Task<User?> GetByIdAsync(string id);
+        Task<User?> UpdateAsync(string id, UpdateUserDto dto);
+        Task<bool> UpdateRoleAsync(string userId, string role);
+        Task<bool> DeleteAsync(string id);
     }
 }

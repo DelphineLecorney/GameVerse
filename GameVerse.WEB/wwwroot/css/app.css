@@ -110,6 +110,20 @@ body {
         opacity: 0.6;
     }
 
+.profile-edit-container {
+    max-width: 420px;
+}
+
+.profile-edit-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+    .profile-edit-actions .btn-app {
+        flex: 1;
+    }
+
 /* ==========================================
    MESSAGES D'ÉTAT
    Usage : <div class="error-message"> / <div class="success-message">
@@ -208,6 +222,7 @@ body {
 /* ==========================================
    BADGES (genre, statut, etc.)
    ========================================== */
+
 .badge-app {
     display: inline-block;
     background: var(--app-accent);

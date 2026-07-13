@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using GameVerse.SHARED.DTOs.Users;
+using GameVerse.API.Extensions;
 using GameVerse.API.Services.Interfaces;
+using GameVerse.SHARED.DTOs.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,31 +27,21 @@ namespace GameVerse.API.Controllers
             _updateUserValidator = updateUserValidator;
         }
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(UserDto), 200)]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> GetUser(int id)
-        {
-            var user = await _userService.GetByIdAsync(id);
-            if (user == null)
-                return NotFound();
-
-            return Ok(_mapper.Map<UserDto>(user));
-        }
-
-        [HttpPut("{id}")]
+        [HttpPut("me")]
         [ProducesResponseType(typeof(UserDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> UpdateUser(int id, UpdateUserDto dto)
+        public async Task<IActionResult> UpdateMe(UpdateUserDto dto)
         {
+            var userId = User.GetUserId();
+            if (userId == null)
+                return BadRequest("User not authenticated.");
+
             var validationResult = await _updateUserValidator.ValidateAsync(dto);
             if (!validationResult.IsValid)
-            {
                 return BadRequest(validationResult.ToDictionary());
-            }
 
-            var updated = await _userService.UpdateAsync(id, dto);
+            var updated = await _userService.UpdateAsync(userId, dto);
             if (updated == null)
                 return NotFound();
 
@@ -59,24 +50,25 @@ namespace GameVerse.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}/role")]
-        public async Task<IActionResult> UpdateRole(int id, UpdateRoleDto dto)
+        public async Task<IActionResult> UpdateRole(string id, UpdateRoleDto dto)
         {
             var updated = await _userService.UpdateRoleAsync(id, dto.Role);
-
             if (!updated)
                 return NotFound(new { message = "Utilisateur introuvable" });
 
             return NoContent();
         }
 
-
-
-        [HttpDelete("{id}")]
+        [HttpDelete("me")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteMe()
         {
-            var deleted = await _userService.DeleteAsync(id);
+            var userId = User.GetUserId();
+            if (userId == null)
+                return BadRequest("User not authenticated.");
+
+            var deleted = await _userService.DeleteAsync(userId);
             if (!deleted)
                 return NotFound();
 

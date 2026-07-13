@@ -9,6 +9,7 @@ public partial class Profile
 {
     [Inject] public AuthService AuthService { get; set; } = default!;
     [Inject] public AuthenticationStateProvider AuthProvider { get; set; } = default!;
+    [Inject] public NavigationManager Navigation { get; set; } = default!;
 
     public UserDto? User { get; set; }
     public bool HasError { get; set; }
@@ -33,5 +34,10 @@ public partial class Profile
             User = null;
             HasError = true;
         }
+    }
+
+    private void GoToEdit()
+    {
+        Navigation.NavigateTo("/profile/edit");
     }
 }

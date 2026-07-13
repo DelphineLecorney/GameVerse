@@ -1,8 +1,6 @@
 ﻿using GameVerse.SHARED.DTOs.Auth;
 using GameVerse.SHARED.DTOs.Users;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-
 
 namespace GameVerse.WEB.Services;
 
@@ -60,6 +58,11 @@ public class AuthService
         return await response.Content.ReadFromJsonAsync<UserDto>();
     }
 
+    public async Task<bool> UpdateProfileAsync(UpdateUserDto dto)
+    {
+        var response = await _http.PutAsJsonAsync("api/users/me", dto);
+        return response.IsSuccessStatusCode;
+    }
 
     public async Task LogoutAsync()
     {

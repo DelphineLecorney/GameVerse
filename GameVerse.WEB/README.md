@@ -54,12 +54,13 @@ Lorsqu'un utilisateur se connecte, un jeton JWT est stocké côté client et uti
 
 ### 🎮 Espace utilisateur
 
-Une fois authentifié, l'utilisateur accède à son espace personnel :
-
-- Profil
+- Profil (consultation et **édition** : username, email)
 - Bibliothèque de jeux
 - Wishlist
-- Favoris
+- Favoris (indépendants du statut de possession — un jeu en bibliothèque *ou* en wishlist peut être marqué favori)
+- Catalogue de jeux avec statut visuel (possédé / souhaité / favori) et actions d'ajout directes
+- Confirmation avant suppression (modal) sur toutes les listes
+- Notifications toast pour le feedback des actions (ajout, favori)
 
 La navigation s'adapte automatiquement à l'état de connexion :
 
