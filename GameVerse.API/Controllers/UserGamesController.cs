@@ -34,18 +34,21 @@ namespace GameVerse.API.Controllers
         [HttpPost("add")]
         [ProducesResponseType(typeof(UserGameDto), 201)]
         [ProducesResponseType(400)]
-        [ProducesResponseType(409)]
         public async Task<IActionResult> AddUserGame(AddUserGameDto userGameDto)
         {
+            var userId = User.GetUserId();
+            if (userId == null)
+                return BadRequest("User not authenticated.");
+
+            userGameDto.UserId = userId;
+
             var validation = await _addValidator.ValidateAsync(userGameDto);
             if (!validation.IsValid)
                 return BadRequest(validation.ToDictionary());
 
-            var userGame = await _userGameService.AddAsync(userGameDto);
+            var userGame = await _userGameService.AddOrUpdateAsync(userGameDto);
 
-            return CreatedAtAction(nameof(GetUserGames),
-                new { userId = userGame.UserId },
-                _mapper.Map<UserGameDto>(userGame));
+            return Ok(_mapper.Map<UserGameDto>(userGame));
         }
 
         [HttpGet("user/{userId}")]
@@ -89,25 +92,35 @@ namespace GameVerse.API.Controllers
         public async Task<IActionResult> GetWishlist()
         {
             var userId = User.GetUserId();
+            if (userId == null) return BadRequest("User not authenticated.");
 
-            if (userId == null)
-                return BadRequest("User not authenticated.");
-
-            var games = await _userGameService.GetByTypeAsync(userId, "Wishlist");
-            return Ok(_mapper.Map<IEnumerable<GameDto>>(games.Select(ug => ug.Game)));
+            var all = await _userGameService.GetByUserAsync(userId);
+            var wishlist = all.Where(ug => ug.RelationType == "Wishlist");
+            return Ok(_mapper.Map<IEnumerable<GameDto>>(wishlist.Select(ug => ug.Game)));
         }
 
         [HttpGet("favorites")]
         public async Task<IActionResult> GetFavorites()
         {
             var userId = User.GetUserId();
+            if (userId == null) return BadRequest("User not authenticated.");
 
-            if (userId == null)
-                return BadRequest("User not authenticated.");
-
-            var games = await _userGameService.GetByTypeAsync(userId, "Favorites");
+            var games = await _userGameService.GetFavoritesAsync(userId);
             return Ok(_mapper.Map<IEnumerable<GameDto>>(games.Select(ug => ug.Game)));
         }
+
+        [HttpPut("{gameId}/favorite")]
+        public async Task<IActionResult> ToggleFavorite(int gameId, [FromBody] bool isFavorite)
+        {
+            var userId = User.GetUserId();
+            if (userId == null) return BadRequest("User not authenticated.");
+
+            var updated = await _userGameService.ToggleFavoriteAsync(userId, gameId, isFavorite);
+            if (updated == null) return NotFound();
+
+            return NoContent();
+        }
+
 
     }
 }

@@ -14,6 +14,7 @@ namespace GameVerse.API.Controllers
     public class GamesController : ControllerBase
     {
         private readonly IGameService _gameService;
+        private readonly IUserGameService _userGameService;
         private readonly IMapper _mapper;
         private readonly IValidator<CreateGameDto> _createValidator;
         private readonly IValidator<UpdateGameDto> _updateGameValidator;
@@ -21,10 +22,12 @@ namespace GameVerse.API.Controllers
 
         public GamesController(
             IGameService gameService,
+            IUserGameService userGameService,
             IMapper mapper, IValidator<CreateGameDto> createValidator,
             IValidator<UpdateGameDto> updateGameValidator)
         {
             _gameService = gameService;
+            _userGameService = userGameService;
             _mapper = mapper;
             _createValidator = createValidator;
             _updateGameValidator = updateGameValidator;
@@ -128,5 +131,33 @@ namespace GameVerse.API.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        [HttpGet("catalog")]
+        public async Task<ActionResult<IEnumerable<GameWithStatusDto>>> GetCatalogWithStatus()
+        {
+            var userId = User.GetUserId();
+            if (userId == null)
+                return BadRequest("User not authenticated.");
+
+            var games = await _gameService.GetAllAsync();
+            var userGames = await _userGameService.GetByUserAsync(userId);
+
+            var userGamesDict = userGames.ToDictionary(ug => ug.GameId);
+
+            var result = games.Select(game =>
+            {
+                var dto = _mapper.Map<GameWithStatusDto>(game);
+
+                if (userGamesDict.TryGetValue(game.GameId, out var userGame))
+                {
+                    dto.RelationType = userGame.RelationType;
+                    dto.IsFavorite = userGame.IsFavorite;
+                }
+
+                return dto;
+            });
+
+            return Ok(result);
+        }
     }
 }

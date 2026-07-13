@@ -34,6 +34,17 @@ namespace GameVerse.WEB.Services
             return await response.Content.ReadFromJsonAsync<GameDto>();
         }
 
+        public async Task<List<GameDto>> GetAllAsync()
+        {
+            var result = await _http.GetFromJsonAsync<List<GameDto>>("api/games");
+            return result ?? new List<GameDto>();
+        }
+
+        public async Task<List<GameWithStatusDto>> GetCatalogAsync()
+        {
+            var result = await _http.GetFromJsonAsync<List<GameWithStatusDto>>("api/games/catalog");
+            return result ?? new List<GameWithStatusDto>();
+        }
 
     }
 

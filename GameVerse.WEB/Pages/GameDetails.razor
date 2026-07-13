@@ -41,6 +41,18 @@ else
                 <span class="meta-value">@(string.IsNullOrWhiteSpace(Game.Publisher) ? "—" : Game.Publisher)</span>
             </div>
 
+            <div class="details-actions">
+                <button class="btn-app btn-app-primary" @onclick='() => AddTo("Library")'>
+                    Ajouter à ma bibliothèque
+                </button>
+                <button class="btn-app btn-app-secondary" @onclick='() => AddTo("Wishlist")'>
+                    Ajouter à ma wishlist
+                </button>
+                <button class="btn-app btn-app-secondary" @onclick='() => AddTo("Favorites")'>
+                    Ajouter aux favoris
+                </button>
+            </div>
+
             <button class="btn-app btn-app-secondary" @onclick="GoBack">
                 <span aria-hidden="true">←</span> Retour à la bibliothèque
             </button>

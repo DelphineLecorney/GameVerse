@@ -137,3 +137,10 @@
         margin-top: 0.4rem;
     }
 }
+
+.details-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}

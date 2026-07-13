@@ -21,6 +21,7 @@ namespace GameVerse.API.Mappings
 
             CreateMap<Game, GameDto>();
             CreateMap<CreateGameDto, Game>();
+            CreateMap<Game, GameWithStatusDto>();
 
             CreateMap<UserGame, UserGameDto>();
             CreateMap<AddUserGameDto, UserGame>();

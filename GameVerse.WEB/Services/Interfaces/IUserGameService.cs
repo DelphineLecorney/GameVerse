@@ -6,6 +6,8 @@ namespace GameVerse.WEB.Services.Interfaces
     {
         Task<List<GameDto>> GetWishlistAsync();
         Task<List<GameDto>> GetFavoritesAsync();
+        Task AddToRelationAsync(int gameId, string relationType);
+        Task ToggleFavoriteAsync(int gameId, bool isFavorite);
         Task RemoveAsync(int gameId);
     }
 }

@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Authorization
+
+@page "/catalog"
+@attribute [Authorize]
+
+<h2 class="page-title">Catalogue de jeux</h2>
+
+@if (HasError)
+{
+    <p class="error-message">Impossible de contacter le serveur. Vérifie que l'API est démarrée, puis réessaie.</p>
+}
+else if (Games == null)
+{
+    <p class="loading">Chargement...</p>
+}
+else
+{
+    <div class="games-grid">
+        @foreach (var game in Games)
+        {
+            <div class="game-card">
+                <img src="@game.CoverUrl" class="cover" />
+
+                <div class="info">
+                    <h3>@game.Title</h3>
+                    <span class="badge-app">@game.Genre</span>
+                    @if (game.RelationType != null)
+                    {
+                        <span class="badge-app badge-status">@(game.RelationType == "Library" ? "Possédé" : "Souhaité")</span>
+                    }
+                </div>
+
+                <div class="actions">
+                    <button class="btn-app btn-app-secondary" @onclick="() => GoToDetails(game.GameId)">
+                        Détails
+                    </button>
+
+                    <button class="btn-app btn-app-primary" @onclick='() => AddTo(game.GameId, "Library")'>
+                        + Bibliothèque
+                    </button>
+                </div>
+                <div class="actions">
+                    <button class="btn-app btn-app-secondary" @onclick='() => AddTo(game.GameId, "Wishlist")'>
+                        + Wishlist
+                    </button>
+                    <button class="btn-app @(game.IsFavorite ? "btn-app-primary" : "btn-app-secondary")"
+                            @onclick="() => ToggleFavorite(game.GameId, game.IsFavorite)">
+                        @(game.IsFavorite ? "★ Favori" : "☆ Favori")
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@if (ToastMessage != null)
+{
+    <div class="toast-notification">@ToastMessage</div>
+}

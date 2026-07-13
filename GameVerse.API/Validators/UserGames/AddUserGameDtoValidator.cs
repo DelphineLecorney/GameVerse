@@ -15,10 +15,9 @@ namespace GameVerse.API.Validators.UserGames
                 .GreaterThan(0).WithMessage("Le jeu est invalide.");
 
             RuleFor(x => x.RelationType)
-                .NotEmpty().WithMessage("Le type de relation est obligatoire.")
-                .Must(type => type == "Wishlist" || type == "Owned" || type == "Finished")
-                .WithMessage("Le type de relation doit être 'Wishlist', 'Owned' ou 'Finished'.");
-
+                .Must(type => new[] { "Wishlist", "Library" }.Contains(type))
+                .WithMessage("Le type de relation doit être 'Wishlist' ou 'Library'.");
+            
             RuleFor(x => x.Rating)
                 .InclusiveBetween(0, 10)
                 .When(x => x.Rating.HasValue)

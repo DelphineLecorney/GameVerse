@@ -9,8 +9,8 @@ namespace GameVerse.API.Validators.UserGames
         {
             RuleFor(x => x.RelationType)
                 .NotEmpty().WithMessage("Le type de relation est obligatoire.")
-                .Must(type => type == "Wishlist" || type == "Owned" || type == "Finished")
-                .WithMessage("Le type de relation doit être 'Wishlist', 'Owned' ou 'Finished'.");
+                .Must(type => new[] { "Wishlist", "Library", "Favorites" }.Contains(type))
+                .WithMessage("Le type de relation doit être 'Wishlist'ou 'Library'.");
 
             RuleFor(x => x.Rating)
                 .InclusiveBetween(0, 10)

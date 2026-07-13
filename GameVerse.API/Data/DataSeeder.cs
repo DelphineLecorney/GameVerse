@@ -74,14 +74,14 @@ namespace GameVerse.API.Data
                     //  Test 
                     new UserGame { UserId = userTest.UserId, GameId = GameId("Cyberpunk 2077"), RelationType = "Wishlist" },
                     new UserGame { UserId = userTest.UserId, GameId = GameId("Elden Ring"), RelationType = "Library", Rating = 5 },
-                    new UserGame { UserId = userTest.UserId, GameId = GameId("Hollow Knight"), RelationType = "Favorites", Rating = 5 },
+                    new UserGame { UserId = userTest.UserId, GameId = GameId("Hollow Knight"), RelationType = "Library", IsFavorite = true, Rating = 5 },
                     new UserGame { UserId = userTest.UserId, GameId = GameId("Terraria"), RelationType = "Library", Rating = 4 },
                     new UserGame { UserId = userTest.UserId, GameId = GameId("Rocket League"), RelationType = "Wishlist" },
 
                     // Delphine 
-                    new UserGame { UserId = userDelphine.UserId, GameId = GameId("Minecraft"), RelationType = "Favorites", Rating = 4 },
-                    new UserGame { UserId = userDelphine.UserId, GameId = GameId("Baldur's Gate 3"), RelationType = "Favorites", Rating = 5 },
-                    new UserGame { UserId = userDelphine.UserId, GameId = GameId("Persona 5 Royal"), RelationType = "Favorites", Rating = 5 },
+                    new UserGame { UserId = userDelphine.UserId, GameId = GameId("Minecraft"), RelationType = "Library", IsFavorite = true, Rating = 4 },
+                    new UserGame { UserId = userDelphine.UserId, GameId = GameId("Baldur's Gate 3"), RelationType = "Library", IsFavorite = true, Rating = 5 },
+                    new UserGame { UserId = userDelphine.UserId, GameId = GameId("Persona 5 Royal"), RelationType = "Library", IsFavorite = true, Rating = 5 },
                     new UserGame { UserId = userDelphine.UserId, GameId = GameId("The Witcher 3"), RelationType = "Library", Rating = 5 },
                     new UserGame { UserId = userDelphine.UserId, GameId = GameId("Hades"), RelationType = "Library", Rating = 4 },
                     new UserGame { UserId = userDelphine.UserId, GameId = GameId("GTA V"), RelationType = "Library", Rating = 3 },
@@ -95,17 +95,17 @@ namespace GameVerse.API.Data
                     // Admin 
                     new UserGame { UserId = userAdmin.UserId, GameId = GameId("League of Legends"), RelationType = "Wishlist" },
                     new UserGame { UserId = userAdmin.UserId, GameId = GameId("Dark Souls III"), RelationType = "Library", Rating = 4 },
-                    new UserGame { UserId = userAdmin.UserId, GameId = GameId("Overwatch 2"), RelationType = "Favorites", Rating = 4 },
+                    new UserGame { UserId = userAdmin.UserId, GameId = GameId("Overwatch 2"), RelationType = "Library", IsFavorite = true, Rating = 4 },
 
                     //  Maxime 
                     new UserGame { UserId = userMaxime.UserId, GameId = GameId("Overwatch 2"), RelationType = "Library", Rating = 3 },
-                    new UserGame { UserId = userMaxime.UserId, GameId = GameId("Elden Ring"), RelationType = "Favorites", Rating = 5 },
+                    new UserGame { UserId = userMaxime.UserId, GameId = GameId("Elden Ring"), RelationType = "Library", IsFavorite = true, Rating = 5 },
                     new UserGame { UserId = userMaxime.UserId, GameId = GameId("Hollow Knight"), RelationType = "Wishlist" },
                     new UserGame { UserId = userMaxime.UserId, GameId = GameId("Rocket League"), RelationType = "Library", Rating = 4 },
 
                     //  Lucas 
                     new UserGame { UserId = userLucas.UserId, GameId = GameId("Cyberpunk 2077"), RelationType = "Library", Rating = 4 },
-                    new UserGame { UserId = userLucas.UserId, GameId = GameId("God of War Ragnarök"), RelationType = "Favorites", Rating = 5 },
+                    new UserGame { UserId = userLucas.UserId, GameId = GameId("God of War Ragnarök"), RelationType = "Library", IsFavorite = true, Rating = 5 },
                     new UserGame { UserId = userLucas.UserId, GameId = GameId("Terraria"), RelationType = "Wishlist" },
                     new UserGame { UserId = userLucas.UserId, GameId = GameId("Persona 5 Royal"), RelationType = "Wishlist" }
                 );
