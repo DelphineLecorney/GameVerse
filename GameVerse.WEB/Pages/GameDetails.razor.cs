@@ -12,8 +12,11 @@ namespace GameVerse.WEB.Pages
         [Inject] public IUserGameService UserGameService { get; set; } = default!;
         [Inject] public NavigationManager Navigation { get; set; } = default!;
 
-        public GameDto? Game { get; set; }
+        public GameWithStatusDto? Game { get; set; }
         public bool HasError { get; set; }
+
+        private string? ToastMessage;
+        private CancellationTokenSource? _toastCts;
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,11 +40,62 @@ namespace GameVerse.WEB.Pages
             try
             {
                 await UserGameService.AddToRelationAsync(GameId, relationType);
+                Game = await GameService.GetByIdAsync(GameId); // recharge le statut mis à jour
+                await ShowToast($"Ajouté ✓");
             }
             catch (Exception)
             {
                 HasError = true;
             }
+        }
+
+        private async Task OnRatingChanged(ChangeEventArgs e)
+        {
+            if (int.TryParse(e.Value?.ToString(), out var rating))
+            {
+                try
+                {
+                    await UserGameService.UpdateRatingAsync(GameId, rating);
+                    Game!.Rating = rating;
+                    await ShowToast("Note enregistrée ✓");
+                }
+                catch (Exception)
+                {
+                    HasError = true;
+                }
+            }
+        }
+
+        private async Task ToggleFavorite()
+        {
+            try
+            {
+                await UserGameService.ToggleFavoriteAsync(GameId, !Game!.IsFavorite);
+                Game.IsFavorite = !Game.IsFavorite;
+                await ShowToast(Game.IsFavorite ? "Ajouté aux favoris ✓" : "Retiré des favoris");
+            }
+            catch (Exception)
+            {
+                await ShowToast("Ajoute d'abord ce jeu à ta bibliothèque ou ta wishlist.");
+            }
+        }
+
+        private async Task ShowToast(string message)
+        {
+            _toastCts?.Cancel();
+            _toastCts = new CancellationTokenSource();
+            var token = _toastCts.Token;
+
+            ToastMessage = message;
+            StateHasChanged();
+
+            try
+            {
+                await Task.Delay(2500, token);
+                ToastMessage = null;
+                StateHasChanged();
+            }
+            catch (TaskCanceledException) { }
         }
     }
 }

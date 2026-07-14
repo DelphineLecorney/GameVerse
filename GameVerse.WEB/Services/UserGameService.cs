@@ -48,5 +48,11 @@ namespace GameVerse.WEB.Services
         {
             await _http.DeleteAsync($"api/usergames/{gameId}");
         }
+
+        public async Task UpdateRatingAsync(int gameId, int rating)
+        {
+            var response = await _http.PutAsJsonAsync($"api/usergames/{gameId}/rating", rating);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

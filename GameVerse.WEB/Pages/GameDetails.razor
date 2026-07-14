@@ -48,14 +48,34 @@ else
                 <button class="btn-app btn-app-secondary" @onclick='() => AddTo("Wishlist")'>
                     Ajouter à ma wishlist
                 </button>
-                <button class="btn-app btn-app-secondary" @onclick='() => AddTo("Favorites")'>
-                    Ajouter aux favoris
+                <button class="btn-app @(Game.IsFavorite ? "btn-app-primary" : "btn-app-secondary")"
+                        @onclick="ToggleFavorite">
+                    @(Game.IsFavorite ? "★ Favori" : "☆ Favori")
                 </button>
             </div>
+
+            @if (Game.RelationType == "Library")
+            {
+                <div class="rating-section">
+                    <label for="ratingSelect">Ma note</label>
+                    <select id="ratingSelect" class="form-control rating-select" value="@Game.Rating" @onchange="OnRatingChanged">
+                        <option value="">— Non noté —</option>
+                        @for (int i = 0; i <= 10; i++)
+                        {
+                            <option value="@i" selected="@(Game.Rating == i)">@i / 10</option>
+                        }
+                    </select>
+                </div>
+            }
 
             <button class="btn-app btn-app-secondary" @onclick="GoBack">
                 <span aria-hidden="true">←</span> Retour à la bibliothèque
             </button>
         </div>
     </div>
+}
+
+@if (ToastMessage != null)
+{
+    <div class="toast-notification">@ToastMessage</div>
 }

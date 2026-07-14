@@ -58,15 +58,17 @@ namespace GameVerse.API.Controllers
             return Ok(_mapper.Map<IEnumerable<UserGameDto>>(list));
         }
 
-
-        [HttpPut("{userId}/{gameId}")]
-        public async Task<IActionResult> UpdateRelation(string userId, int gameId, UpdateUserGameDto updateUserGameDto)
+        [HttpPut("{gameId}/rating")]
+        public async Task<IActionResult> UpdateRating(int gameId, [FromBody] int rating)
         {
-            var validation = await _updateValidator.ValidateAsync(updateUserGameDto);
-            if (!validation.IsValid)
-                return BadRequest(validation.ToDictionary());
+            var userId = User.GetUserId();
+            if (userId == null)
+                return BadRequest("User not authenticated.");
 
-            var updated = await _userGameService.UpdateAsync(userId, gameId, updateUserGameDto);
+            if (rating < 0 || rating > 10)
+                return BadRequest("La note doit être comprise entre 0 et 10.");
+
+            var updated = await _userGameService.UpdateRatingAsync(userId, gameId, rating);
             if (updated == null)
                 return NotFound();
 

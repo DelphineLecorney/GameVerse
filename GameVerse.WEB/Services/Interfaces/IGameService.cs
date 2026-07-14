@@ -6,9 +6,9 @@ namespace GameVerse.WEB.Services.Interfaces
     {
         Task<List<GameDto>> GetUserLibraryAsync();
         Task RemoveFromLibraryAsync(int gameId);
-        Task<GameDto?> GetByIdAsync(int id);
         Task<List<GameDto>> GetAllAsync();
         Task<List<GameWithStatusDto>> GetCatalogAsync();
+        Task<GameWithStatusDto?> GetByIdAsync(int id);
     }
 
 }

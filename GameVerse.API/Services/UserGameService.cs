@@ -134,5 +134,18 @@ namespace GameVerse.API.Services
 
             return stats;
         }
+
+        public async Task<UserGame?> UpdateRatingAsync(string userId, int gameId, int rating)
+        {
+            var userGame = await _context.UserGames
+                .FirstOrDefaultAsync(ug => ug.UserId == userId && ug.GameId == gameId);
+
+            if (userGame == null || userGame.RelationType != "Library")
+                return null;
+
+            userGame.Rating = rating;
+            await _context.SaveChangesAsync();
+            return userGame;
+        }
     }
 }

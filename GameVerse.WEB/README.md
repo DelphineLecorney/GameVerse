@@ -68,6 +68,7 @@ Lorsqu'un utilisateur se connecte, un jeton JWT est stocké côté client et uti
 - Catalogue de jeux avec statut visuel (possédé / souhaité / favori) et actions d'ajout directes
 - Confirmation avant suppression (modal) sur toutes les listes
 - Notifications toast pour le feedback des actions (ajout, favori)
+- Notation des jeux possédés (sélecteur 0-10) directement depuis la page de détails, avec sauvegarde immédiate
 
 La navigation s'adapte automatiquement à l'état de connexion :
 

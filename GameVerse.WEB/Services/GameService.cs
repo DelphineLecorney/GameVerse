@@ -24,14 +24,13 @@ namespace GameVerse.WEB.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<GameDto?> GetByIdAsync(int id)
+        public async Task<GameWithStatusDto?> GetByIdAsync(int id)
         {
             var response = await _http.GetAsync($"api/games/{id}");
-
             if (!response.IsSuccessStatusCode)
                 return null;
 
-            return await response.Content.ReadFromJsonAsync<GameDto>();
+            return await response.Content.ReadFromJsonAsync<GameWithStatusDto>();
         }
 
         public async Task<List<GameDto>> GetAllAsync()

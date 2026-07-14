@@ -41,17 +41,33 @@ namespace GameVerse.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(GameDto), 200)]
+        [ProducesResponseType(typeof(GameWithStatusDto), 200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<Game>> GetGame(int id)
+        public async Task<ActionResult<GameWithStatusDto>> GetGame(int id)
         {
             var game = await _gameService.GetByIdAsync(id);
-
             if (game == null)
                 return NotFound();
 
-            return Ok(_mapper.Map<GameDto>(game));
+            var dto = _mapper.Map<GameWithStatusDto>(game);
+
+            var userId = User.GetUserId();
+            if (userId != null)
+            {
+                var userGame = (await _userGameService.GetByUserAsync(userId))
+                    .FirstOrDefault(ug => ug.GameId == id);
+
+                if (userGame != null)
+                {
+                    dto.RelationType = userGame.RelationType;
+                    dto.IsFavorite = userGame.IsFavorite;
+                    dto.Rating = userGame.Rating;
+                }
+            }
+
+            return Ok(dto);
         }
+
 
         [Authorize(Roles = "Admin")]
         [HttpPost]

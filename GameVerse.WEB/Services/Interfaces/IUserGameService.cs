@@ -9,5 +9,6 @@ namespace GameVerse.WEB.Services.Interfaces
         Task AddToRelationAsync(int gameId, string relationType);
         Task ToggleFavoriteAsync(int gameId, bool isFavorite);
         Task RemoveAsync(int gameId);
+        Task UpdateRatingAsync(int gameId, int rating);
     }
 }
