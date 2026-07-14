@@ -96,7 +96,8 @@ GameVerse.API/
 │   ├── AuthController.cs
 │   ├── UsersController.cs
 │   ├── GamesController.cs
-│   └── UserGamesController.cs
+│   ├── UserGamesController.cs
+│   └── StatsController.cs
 │
 ├── DTOs/
 │   ├── Auth/
@@ -261,5 +262,10 @@ app.UseScalar(options =>
 docker build -t gameverse-api .
 docker run -p 8080:80 gameverse-api
 ```
+
+### 📊 Statistiques utilisateur
+- Endpoint dédié (`GET /api/stats/me`) calculant les statistiques de la collection de l'utilisateur connecté
+- Répartition par genre, top développeurs, compteurs par statut (bibliothèque/wishlist/favoris), note moyenne
+- Agrégation calculée à la volée via LINQ (`GroupBy`, `Average`) à partir des relations `UserGame`
 
 [⬅ Retour au README principal](../README.md)

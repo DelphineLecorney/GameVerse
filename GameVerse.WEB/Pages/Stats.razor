@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Authorization
+
+@page "/stats"
+@attribute [Authorize]
+
+<h2 class="page-title">Mes statistiques</h2>
+
+@if (HasError)
+{
+    <p class="error-message">Impossible de contacter le serveur. Vérifie que l'API est démarrée, puis réessaie.</p>
+}
+else if (StatsData == null)
+{
+    <p class="loading">Chargement...</p>
+}
+else if (StatsData.TotalGames == 0)
+{
+    <p>Ajoute des jeux à ta bibliothèque pour voir apparaître tes statistiques !</p>
+}
+else
+{
+    <div class="stats-summary">
+        <div class="stat-card">
+            <span class="stat-value">@StatsData.TotalGames</span>
+            <span class="stat-label">Jeux au total</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">@StatsData.LibraryCount</span>
+            <span class="stat-label">En bibliothèque</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">@StatsData.WishlistCount</span>
+            <span class="stat-label">En liste de souhaits</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">@StatsData.FavoritesCount</span>
+            <span class="stat-label">Favoris</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">@(StatsData.AverageRating > 0 ? StatsData.AverageRating.ToString("0.0") : "—")</span>
+            <span class="stat-label">Note moyenne</span>
+        </div>
+    </div>
+
+    <div class="stats-charts">
+        <div class="app-panel chart-panel">
+            <h3>Répartition par genre</h3>
+            <canvas id="genreChart"></canvas>
+        </div>
+
+        <div class="app-panel chart-panel">
+            <h3>Développeurs les plus présents</h3>
+            <canvas id="developersChart"></canvas>
+        </div>
+    </div>
+}

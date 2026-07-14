@@ -12,6 +12,7 @@ Client **Blazor WebAssembly** consommant l'API GameVerse, avec authentification 
 - [Authentification Web](#-authentification-web)
 - [Stabilisation de l'authentification (WASM)](#-stabilisation-de-lauthentification-wasm)
 - [Captures d'écran](#-captures-décran)
+- [Statistiques](#-statistiques)
 
 ---
 
@@ -26,10 +27,16 @@ GameVerse.WEB/
 │   ├── Login.razor
 │   ├── Register.razor
 │   ├── Profile.razor
+│   ├── ProfileEdit.razor
 │   ├── Library.razor
 │   ├── Wishlist.razor
 │   ├── Favorites.razor
+│   ├── Catalog.razor
+│   ├── Stats.razor
 │   └── NotFound.razor
+│
+├── Components/
+│   └── ConfirmModal.razor
 │
 ├── Layout/
 │   ├── MainLayout.razor
@@ -133,13 +140,22 @@ Plusieurs bugs classiques de Blazor WebAssembly ont été résolus :
     </tr>
     <tr>
       <th align="center">Souhaits</th>
-      <th align="center" width="50%"></th>
+      <th align="center" width="50%">Statistiques</th>
     </tr>
     <tr>
       <td align="center"><img src="../docs/images/Souhaits.png" width="450"></td>
-      <td align="center"></td>
+      <td align="center"><img src="../docs/images/Stats.png" width="450"></td>
     </tr>
   </tbody>
 </table>
+
+### 📊 Statistiques
+
+Page dédiée (`/stats`) affichant la collection de l'utilisateur sous forme de graphiques :
+- Répartition des jeux par genre (graphique en anneau)
+- Développeurs les plus représentés dans la collection (graphique en barres)
+- Compteurs synthétiques (total, bibliothèque, wishlist, favoris, note moyenne)
+
+Les graphiques sont rendus via **Chart.js**, intégré en JS interop (`wwwroot/js/charts.js`), appelé depuis le code-behind Blazor via `IJSRuntime`.
 
 [⬅ Retour au README principal](../README.md)

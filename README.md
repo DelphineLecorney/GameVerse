@@ -58,7 +58,7 @@ Le projet est structuré en trois projets distincts :
 ## 🧱 Stack technique
 
 **Backend** : .NET 10 · Entity Framework Core · Azure SQL · JWT · FluentValidation · AutoMapper  
-**Frontend** : Blazor WebAssembly · CSS custom (design system maison)  
+**Frontend** : Blazor WebAssembly · CSS custom (design system maison) · Chart.js (visualisation de données)
 **Infra** : Azure App Service · Docker
 
 ---

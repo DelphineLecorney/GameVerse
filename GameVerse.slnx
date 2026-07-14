@@ -19,6 +19,7 @@
     <File Path="docs/images/Profile.png" />
     <File Path="docs/images/Register.png" />
     <File Path="docs/images/Souhaits.png" />
+    <File Path="docs/images/Stats.png" />
   </Folder>
   <Project Path="GameVerse.API/GameVerse.API.csproj" />
   <Project Path="GameVerse.Shared/GameVerse.SHARED.csproj" />

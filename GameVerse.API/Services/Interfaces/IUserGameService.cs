@@ -1,4 +1,5 @@
 ﻿using GameVerse.API.Models;
+using GameVerse.SHARED.DTOs.Stats;
 using GameVerse.SHARED.DTOs.UserGame;
 
 namespace GameVerse.API.Services.Interfaces
@@ -11,5 +12,6 @@ namespace GameVerse.API.Services.Interfaces
         Task<UserGame?> ToggleFavoriteAsync(string userId, int gameId, bool isFavorite);
         Task<UserGame?> UpdateAsync(string userId, int gameId, UpdateUserGameDto dto);
         Task<bool> RemoveAsync(string userId, int gameId);
+        Task<UserStatsDto> GetStatsAsync(string userId);
     }
 }

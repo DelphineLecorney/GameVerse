@@ -33,6 +33,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IUserGameService, UserGameService>();
+builder.Services.AddScoped<IStatsService, StatsService>();
 
 
 await builder.Build().RunAsync();

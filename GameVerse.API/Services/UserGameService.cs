@@ -1,6 +1,7 @@
 ﻿using GameVerse.API.Data;
 using GameVerse.API.Models;
 using GameVerse.API.Services.Interfaces;
+using GameVerse.SHARED.DTOs.Stats;
 using GameVerse.SHARED.DTOs.UserGame;
 using Microsoft.EntityFrameworkCore;
 
@@ -103,5 +104,35 @@ namespace GameVerse.API.Services
             return userGame;
         }
 
+        public async Task<UserStatsDto> GetStatsAsync(string userId)
+        {
+            var userGames = await _context.UserGames
+                .Include(ug => ug.Game)
+                .Where(ug => ug.UserId == userId)
+                .ToListAsync();
+
+            var stats = new UserStatsDto
+            {
+                TotalGames = userGames.Count,
+                LibraryCount = userGames.Count(ug => ug.RelationType == "Library"),
+                WishlistCount = userGames.Count(ug => ug.RelationType == "Wishlist"),
+                FavoritesCount = userGames.Count(ug => ug.IsFavorite),
+                AverageRating = userGames.Any(ug => ug.Rating.HasValue)
+                    ? Math.Round(userGames.Where(ug => ug.Rating.HasValue).Average(ug => ug.Rating!.Value), 1)
+                    : 0,
+                GamesByGenre = userGames
+                    .Where(ug => ug.Game != null)
+                    .GroupBy(ug => ug.Game!.Genre)
+                    .ToDictionary(g => g.Key, g => g.Count()),
+                TopDevelopers = userGames
+                    .Where(ug => ug.Game != null)
+                    .GroupBy(ug => ug.Game!.Developer)
+                    .OrderByDescending(g => g.Count())
+                    .Take(5)
+                    .ToDictionary(g => g.Key, g => g.Count())
+            };
+
+            return stats;
+        }
     }
 }

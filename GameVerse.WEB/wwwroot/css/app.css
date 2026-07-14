@@ -374,3 +374,51 @@ body {
         transform: translate(-50%, 0);
     }
 }
+
+/* ==========================================
+   STATISTIQUES
+   ========================================== */
+.stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--app-bg-panel);
+    border: 1px solid var(--app-border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--app-accent);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--app-text-light);
+    margin-top: 0.3rem;
+}
+
+.stats-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.chart-panel h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--app-accent);
+}
+
+.chart-panel canvas {
+    max-height: 300px;
+}
