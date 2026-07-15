@@ -48,7 +48,7 @@ namespace GameVerse.API.Services
         {
             var game = await _context.Games.FindAsync(id);
             if (game == null)
-                return null!;
+                return null;
 
             game.Title = dto.Title;
             game.Description = dto.Description;
@@ -76,7 +76,7 @@ namespace GameVerse.API.Services
         public async Task<IEnumerable<Game>> GetUserLibraryAsync(string userId)
         {
             return await _context.UserGames
-                .Where(ug => ug.UserId == userId)
+                .Where(ug => ug.UserId == userId && ug.RelationType == "Library")
                 .Select(ug => ug.Game!)
                 .ToListAsync();
         }
@@ -84,7 +84,7 @@ namespace GameVerse.API.Services
         public async Task<bool> RemoveFromLibraryAsync(string userId, int gameId)
         {
             var entry = await _context.UserGames
-                .FirstOrDefaultAsync(ug => ug.UserId == userId && ug.GameId == gameId);
+                .FirstOrDefaultAsync(ug => ug.UserId == userId && ug.GameId == gameId && ug.RelationType == "Library");
 
             if (entry == null)
                 return false;
@@ -92,6 +92,6 @@ namespace GameVerse.API.Services
             _context.UserGames.Remove(entry);
             await _context.SaveChangesAsync();
             return true;
-        }
+        }       
     }
 }

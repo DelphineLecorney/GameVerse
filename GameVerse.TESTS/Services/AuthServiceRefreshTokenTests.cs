@@ -8,6 +8,7 @@ namespace GameVerse.TESTS.Services
 {
     public class AuthServiceRefreshTokenTests
     {
+        // Construit une configuration factice en mémoire pour tester la logique JWT sans dépendances externes.
         private static IConfiguration BuildFakeConfig()
         {
             var settings = new Dictionary<string, string?>
@@ -22,6 +23,7 @@ namespace GameVerse.TESTS.Services
                 .Build();
         }
 
+        // Crée un contexte EF Core en mémoire pour isoler chaque test et éviter toute base réelle.
         private static GameVerseContext BuildInMemoryContext()
         {
             var options = new DbContextOptionsBuilder<GameVerseContext>()
@@ -31,6 +33,7 @@ namespace GameVerse.TESTS.Services
             return new GameVerseContext(options);
         }
 
+        // Vérifie qu’un token inconnu retourne null lors d’une tentative de rafraîchissement.
         [Fact]
         public async Task RefreshTokenAsync_UnknownToken_ShouldReturnNull()
         {
@@ -43,6 +46,8 @@ namespace GameVerse.TESTS.Services
             Assert.Null(result);
         }
 
+
+        // Vérifie qu’un token révoqué ne peut pas être utilisé pour obtenir de nouveaux tokens.
         [Fact]
         public async Task RefreshTokenAsync_RevokedToken_ShouldReturnNull()
         {
@@ -76,6 +81,7 @@ namespace GameVerse.TESTS.Services
             Assert.Null(result);
         }
 
+        // Vérifie qu’un token expiré ne peut pas être rafraîchi.
         [Fact]
         public async Task RefreshTokenAsync_ExpiredToken_ShouldReturnNull()
         {
@@ -109,6 +115,7 @@ namespace GameVerse.TESTS.Services
             Assert.Null(result);
         }
 
+        // Vérifie qu’un token valide génère de nouveaux tokens et que l’ancien est correctement révoqué.
         [Fact]
         public async Task RefreshTokenAsync_ValidToken_ShouldReturnNewTokensAndRevokeOldOne()
         {

@@ -8,6 +8,7 @@ namespace GameVerse.TESTS.Services
 {
     public class AuthServiceRegisterTests
     {
+        // Construit une configuration factice en mémoire pour tester la logique JWT sans dépendances externes.
         private static IConfiguration BuildFakeConfig()
         {
             var settings = new Dictionary<string, string?>
@@ -22,6 +23,7 @@ namespace GameVerse.TESTS.Services
                 .Build();
         }
 
+        // Crée un contexte EF Core en mémoire pour isoler chaque test et éviter toute base réelle.
         private static GameVerseContext BuildInMemoryContext()
         {
             var options = new DbContextOptionsBuilder<GameVerseContext>()
@@ -31,6 +33,7 @@ namespace GameVerse.TESTS.Services
             return new GameVerseContext(options);
         }
 
+        // Vérifie que l'inscription crée un utilisateur avec un mot de passe correctement hashé.
         [Fact]
         public async Task RegisterAsync_ShouldCreateUserWithHashedPassword()
         {
@@ -57,6 +60,7 @@ namespace GameVerse.TESTS.Services
             Assert.True(BCrypt.Net.BCrypt.Verify("MonMotDePasse123", createdUser.PasswordHash));
         }
 
+        // Vérifie que l'utilisateur nouvellement inscrit est bien enregistré en base de données.
         [Fact]
         public async Task RegisterAsync_ShouldPersistUserInDatabase()
         {

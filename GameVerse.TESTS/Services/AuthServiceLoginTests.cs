@@ -9,6 +9,7 @@ namespace GameVerse.TESTS.Services
 {
     public class AuthServiceLoginTests
     {
+        // Construit une configuration factice en mémoire pour les tests liés à l’authentification (JWT).
         private static IConfiguration BuildFakeConfig()
         {
             var settings = new Dictionary<string, string?>
@@ -23,6 +24,7 @@ namespace GameVerse.TESTS.Services
                 .Build();
         }
 
+        // Crée un contexte EF Core en mémoire pour isoler chaque test sans base de données réelle.
         private static GameVerseContext BuildInMemoryContext()
         {
             var options = new DbContextOptionsBuilder<GameVerseContext>()
@@ -32,6 +34,7 @@ namespace GameVerse.TESTS.Services
             return new GameVerseContext(options);
         }
 
+        // Vérifie qu'une tentative de connexion avec un email inconnu retourne null.
         [Fact]
         public async Task LoginAsync_UnknownEmail_ShouldReturnNull()
         {
@@ -50,6 +53,7 @@ namespace GameVerse.TESTS.Services
             Assert.Null(result);
         }
 
+        // Vérifie qu'un mot de passe incorrect entraîne un échec de connexion.
         [Fact]
         public async Task LoginAsync_WrongPassword_ShouldReturnNull()
         {
@@ -79,6 +83,7 @@ namespace GameVerse.TESTS.Services
             Assert.Null(result);
         }
 
+        // Vérifie qu'une connexion avec des identifiants valides retourne une réponse d'authentification complète.
         [Fact]
         public async Task LoginAsync_ValidCredentials_ShouldReturnAuthResponse()
         {

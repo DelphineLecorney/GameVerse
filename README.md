@@ -19,7 +19,7 @@ Le projet est structuré en trois projets distincts :
 |---|---|---|
 | **GameVerse.API** | API RESTful (.NET 10, EF Core, Azure SQL, JWT) | [📄 README API](GameVerse.API/README.md) |
 | **GameVerse.WEB** | Client Blazor WebAssembly | [📄 README WEB](GameVerse.WEB/README.md) |
-| **GameVerse.TESTS** | Tests unitaires (xUnit, Moq) | [📄 README TESTS](GameVerse.TESTS/README.md) |
+| **GameVerse.Tests** | Tests unitaires (xUnit, EF Core InMemory) 43 tests | [📄 README Tests](GameVerse.Tests/README.md) |
 
 ---
 
@@ -58,8 +58,9 @@ Le projet est structuré en trois projets distincts :
 ## 🧱 Stack technique
 
 **Backend** : .NET 10 · Entity Framework Core · Azure SQL · JWT · FluentValidation · AutoMapper  
-**Frontend** : Blazor WebAssembly · CSS custom (design system maison) · Chart.js (visualisation de données)
+**Frontend** : Blazor WebAssembly · CSS custom (design system maison) · Chart.js (visualisation de données)  
 **Infra** : Azure App Service · Docker
+
 
 ---
 

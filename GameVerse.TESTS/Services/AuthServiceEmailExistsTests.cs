@@ -8,6 +8,7 @@ namespace GameVerse.TESTS.Services
 {
     public class AuthServiceEmailExistsTests
     {
+        // Construit une configuration factice en mémoire pour les tests liés au JWT.
         private static IConfiguration BuildFakeConfig()
         {
             var settings = new Dictionary<string, string?>
@@ -22,6 +23,7 @@ namespace GameVerse.TESTS.Services
                 .Build();
         }
 
+        // Crée un contexte EF Core en mémoire pour exécuter les tests sans base de données réelle.
         private static GameVerseContext BuildInMemoryContext()
         {
             var options = new DbContextOptionsBuilder<GameVerseContext>()
@@ -31,6 +33,7 @@ namespace GameVerse.TESTS.Services
             return new GameVerseContext(options);
         }
 
+        // Vérifie qu'un email connu en base est correctement détecté comme existant.
         [Fact]
         public async Task EmailExists_KnownEmail_ShouldReturnTrue()
         {
@@ -54,6 +57,7 @@ namespace GameVerse.TESTS.Services
             Assert.True(result);
         }
 
+        // Vérifie qu'un email absent de la base retourne false.
         [Fact]
         public async Task EmailExists_UnknownEmail_ShouldReturnFalse()
         {

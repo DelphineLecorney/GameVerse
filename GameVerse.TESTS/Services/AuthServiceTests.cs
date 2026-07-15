@@ -7,6 +7,7 @@ namespace GameVerse.TESTS.Services
 {
     public class AuthServiceTests
     {
+        // Construit une configuration factice en mémoire pour tester la génération de JWT.
         private static IConfiguration BuildFakeConfig()
         {
             var settings = new Dictionary<string, string?>
@@ -21,6 +22,7 @@ namespace GameVerse.TESTS.Services
                 .Build();
         }
 
+        // Vérifie que le JWT généré contient bien les claims attendus pour l'utilisateur.
         [Fact]
         public void GenerateJwtToken_ShouldContainCorrectClaims()
         {
@@ -47,6 +49,7 @@ namespace GameVerse.TESTS.Services
             Assert.Equal("delphine", jwt.Claims.First(c => c.Type == "username").Value);
         }
 
+        // Vérifie que le JWT généré possède une date d’expiration valide et future.
         [Fact]
         public void GenerateJwtToken_ShouldHaveFutureExpiration()
         {
