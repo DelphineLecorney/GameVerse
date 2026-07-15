@@ -7,8 +7,8 @@ Application complète de gestion de bibliothèque de jeux vidéo, développée e
 ![Status](https://img.shields.io/badge/status-active-success)
 ![Platform](https://img.shields.io/badge/platform-Azure-blue)
 
-> 🔗 **Démo live** : <video src="./docs/images/Gameverse.mp4" width="100%" controls autoplay muted loop></video>
-
+> 🔗 **Démo live** :
+[![Démo GameVerse](https://img.youtube.com/vi/oSq41WOVxlk/maxresdefault.jpg)](https://youtu.be/oSq41WOVxlk)
 
 ---
 
